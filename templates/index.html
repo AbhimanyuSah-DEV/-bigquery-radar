@@ -1,0 +1,1100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BigQuery Release Notes Hub</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --bg-primary: #0b0f19;
+            --bg-secondary: #161c2c;
+            --bg-tertiary: #1e2640;
+            --accent-color: #38bdf8; /* Sky Blue */
+            --accent-glow: rgba(56, 189, 248, 0.15);
+            --text-primary: #f8fafc;
+            --text-secondary: #94a3b8;
+            --text-muted: #64748b;
+            --border-color: #2e3c60;
+            --card-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5);
+            
+            /* Tag Colors */
+            --color-feature: #10b981; /* Emerald */
+            --color-announcement: #3b82f6; /* Blue */
+            --color-issue: #ef4444; /* Red */
+            --color-deprecation: #f59e0b; /* Amber */
+            --color-general: #8b5cf6; /* Purple */
+        }
+
+        [data-theme="light"] {
+            --bg-primary: #f8fafc;
+            --bg-secondary: #ffffff;
+            --bg-tertiary: #f1f5f9;
+            --accent-color: #0284c7;
+            --accent-glow: rgba(2, 132, 199, 0.1);
+            --text-primary: #0f172a;
+            --text-secondary: #475569;
+            --text-muted: #94a3b8;
+            --border-color: #e2e8f0;
+            --card-shadow: 0 10px 25px -15px rgba(0, 0, 0, 0.1);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease;
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            min-height: 100vh;
+            line-height: 1.6;
+            padding-bottom: 100px; /* Space for the floating actions bar */
+        }
+
+        header {
+            background-color: var(--bg-secondary);
+            border-bottom: 1px solid var(--border-color);
+            padding: 1.5rem 2rem;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            backdrop-filter: blur(12px);
+            background-opacity: 0.9;
+        }
+
+        .header-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo-section {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .logo-icon {
+            background: linear-gradient(135deg, var(--accent-color), #818cf8);
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.25rem;
+            box-shadow: 0 4px 15px var(--accent-glow);
+        }
+
+        .logo-title {
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.5rem;
+            font-weight: 700;
+            background: linear-gradient(to right, var(--text-primary), var(--accent-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        /* Common Button Styles */
+        .btn {
+            background-color: var(--bg-tertiary);
+            border: 1px solid var(--border-color);
+            color: var(--text-primary);
+            padding: 0.6rem 1.2rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.9rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .btn:hover {
+            background-color: var(--border-color);
+            transform: translateY(-1px);
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--accent-color), #6366f1);
+            color: white;
+            border: none;
+            box-shadow: 0 4px 15px var(--accent-glow);
+        }
+
+        .btn-primary:hover {
+            background: linear-gradient(135deg, #0ea5e9, #4f46e5);
+            box-shadow: 0 6px 20px var(--accent-glow);
+        }
+
+        .btn-theme-toggle {
+            width: 40px;
+            height: 40px;
+            padding: 0;
+            justify-content: center;
+            border-radius: 50%;
+        }
+
+        /* Main Content */
+        main {
+            max-width: 1000px;
+            margin: 2rem auto;
+            padding: 0 1.5rem;
+        }
+
+        /* Controls / Filtering Box */
+        .controls-panel {
+            background-color: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            box-shadow: var(--card-shadow);
+            display: flex;
+            flex-direction: column;
+            gap: 1.25rem;
+        }
+
+        .search-bar {
+            position: relative;
+            flex-grow: 1;
+        }
+
+        .search-bar i {
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-muted);
+        }
+
+        .search-input {
+            width: 100%;
+            background-color: var(--bg-primary);
+            border: 1px solid var(--border-color);
+            color: var(--text-primary);
+            padding: 0.75rem 1rem 0.75rem 2.7rem;
+            border-radius: 10px;
+            font-size: 0.95rem;
+            outline: none;
+        }
+
+        .search-input:focus {
+            border-color: var(--accent-color);
+            box-shadow: 0 0 0 3px var(--accent-glow);
+        }
+
+        .filters-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            align-items: center;
+        }
+
+        .filter-label {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            margin-right: 0.5rem;
+            font-weight: 500;
+        }
+
+        .filter-chip {
+            padding: 0.4rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            cursor: pointer;
+            border: 1px solid var(--border-color);
+            background-color: var(--bg-primary);
+            color: var(--text-secondary);
+        }
+
+        .filter-chip.active {
+            color: white;
+            border-color: transparent;
+        }
+
+        .filter-chip.active[data-type="all"] { background-color: var(--accent-color); }
+        .filter-chip.active[data-type="feature"] { background-color: var(--color-feature); }
+        .filter-chip.active[data-type="announcement"] { background-color: var(--color-announcement); }
+        .filter-chip.active[data-type="issue"] { background-color: var(--color-issue); }
+        .filter-chip.active[data-type="deprecation"] { background-color: var(--color-deprecation); }
+
+        /* Release list */
+        .releases-container {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .card-date-header {
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-top: 1rem;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .card-date-header::after {
+            content: '';
+            flex-grow: 1;
+            height: 1px;
+            background-color: var(--border-color);
+        }
+
+        /* Individual Update Item Card */
+        .update-card {
+            background-color: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 14px;
+            padding: 1.5rem;
+            box-shadow: var(--card-shadow);
+            position: relative;
+            cursor: pointer;
+            transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+            display: flex;
+            gap: 1rem;
+        }
+
+        .update-card:hover {
+            transform: translateY(-2px);
+            border-color: var(--accent-color);
+            box-shadow: 0 8px 25px -5px rgba(0,0,0,0.4);
+        }
+
+        .update-card.selected {
+            border-color: var(--accent-color);
+            background-color: var(--bg-tertiary);
+            box-shadow: 0 0 0 1px var(--accent-color), var(--card-shadow);
+        }
+
+        /* Selection Indicator Checkbox Style */
+        .card-selector {
+            display: flex;
+            align-items: flex-start;
+            padding-top: 0.25rem;
+        }
+
+        .checkbox-custom {
+            width: 20px;
+            height: 20px;
+            border-radius: 5px;
+            border: 2px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: transparent;
+            font-size: 0.75rem;
+            transition: all 0.2s;
+        }
+
+        .update-card.selected .checkbox-custom {
+            background-color: var(--accent-color);
+            border-color: var(--accent-color);
+            color: var(--bg-primary);
+        }
+
+        .card-body {
+            flex-grow: 1;
+        }
+
+        .card-header-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.75rem;
+        }
+
+        .badge {
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            padding: 0.25rem 0.6rem;
+            border-radius: 6px;
+            color: white;
+            letter-spacing: 0.5px;
+        }
+
+        .badge-feature { background-color: var(--color-feature); }
+        .badge-announcement { background-color: var(--color-announcement); }
+        .badge-issue { background-color: var(--color-issue); }
+        .badge-deprecation { background-color: var(--color-deprecation); }
+        .badge-general { background-color: var(--color-general); }
+
+        .card-meta {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .card-content {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+
+        .card-content a {
+            color: var(--accent-color);
+            text-decoration: none;
+        }
+
+        .card-content a:hover {
+            text-decoration: underline;
+        }
+
+        .card-content p {
+            margin-bottom: 0.75rem;
+        }
+
+        .card-content p:last-child {
+            margin-bottom: 0;
+        }
+
+        .card-content code {
+            background-color: var(--bg-primary);
+            padding: 0.1rem 0.4rem;
+            border-radius: 4px;
+            font-family: monospace;
+            font-size: 0.85rem;
+            color: var(--accent-color);
+        }
+
+        /* Individual Card Hover Tweet Button */
+        .card-hover-actions {
+            margin-top: 1rem;
+            display: flex;
+            justify-content: flex-end;
+            opacity: 0.8;
+            transition: opacity 0.2s;
+        }
+
+        .update-card:hover .card-hover-actions {
+            opacity: 1;
+        }
+
+        /* Spinner & Loading */
+        .spinner {
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .loading-state, .error-state, .empty-state {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 4rem 2rem;
+            background-color: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            text-align: center;
+            box-shadow: var(--card-shadow);
+        }
+
+        .state-icon {
+            font-size: 3rem;
+            margin-bottom: 1.5rem;
+            color: var(--text-muted);
+        }
+
+        .loading-state .state-icon {
+            color: var(--accent-color);
+        }
+
+        .error-state .state-icon {
+            color: var(--color-issue);
+        }
+
+        .state-title {
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .state-desc {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            max-width: 400px;
+        }
+
+        /* Floating Action Bar for Selection */
+        .floating-action-bar {
+            position: fixed;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%) translateY(150px);
+            background-color: rgba(22, 28, 44, 0.9);
+            backdrop-filter: blur(16px);
+            border: 1px solid var(--accent-color);
+            padding: 1rem 2rem;
+            border-radius: 100px;
+            box-shadow: 0 10px 40px -5px rgba(56, 189, 248, 0.3);
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            z-index: 1000;
+            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            max-width: calc(100vw - 3rem);
+        }
+
+        .floating-action-bar.visible {
+            transform: translateX(-50%) translateY(0);
+        }
+
+        .selection-count {
+            color: var(--text-primary);
+            font-weight: 600;
+            font-size: 0.95rem;
+            white-space: nowrap;
+        }
+
+        /* Tweet Modal */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.75);
+            backdrop-filter: blur(8px);
+            z-index: 2000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            pointer-events: all;
+        }
+
+        .modal-container {
+            background-color: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            width: 90%;
+            max-width: 550px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            overflow: hidden;
+            transform: scale(0.9);
+            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .modal-overlay.active .modal-container {
+            transform: scale(1);
+        }
+
+        .modal-header {
+            padding: 1.25rem 1.5rem;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-title {
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.2rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            font-size: 1.2rem;
+            cursor: pointer;
+        }
+
+        .modal-close:hover {
+            color: var(--text-primary);
+        }
+
+        .modal-body {
+            padding: 1.5rem;
+        }
+
+        .tweet-preview-area {
+            background-color: var(--bg-primary);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 1rem;
+            min-height: 120px;
+            color: var(--text-primary);
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-size: 1rem;
+            line-height: 1.5;
+            outline: none;
+            resize: vertical;
+            width: 100%;
+        }
+
+        .tweet-preview-area:focus {
+            border-color: var(--accent-color);
+        }
+
+        .modal-footer {
+            padding: 1.25rem 1.5rem;
+            border-top: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .char-counter {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            font-weight: 500;
+        }
+
+        .char-counter.warning {
+            color: var(--color-deprecation);
+        }
+
+        .char-counter.danger {
+            color: var(--color-issue);
+        }
+
+        .btn-tweet-action {
+            background-color: #1d9bf0;
+            color: white;
+            border: none;
+        }
+
+        .btn-tweet-action:hover {
+            background-color: #1a8cd8;
+        }
+
+        /* Responsive */
+        @media (max-width: 600px) {
+            .header-container {
+                flex-direction: column;
+                gap: 1rem;
+            }
+            .controls-panel {
+                padding: 1rem;
+            }
+            .floating-action-bar {
+                flex-direction: column;
+                gap: 0.75rem;
+                border-radius: 20px;
+                width: 90%;
+                bottom: 1rem;
+                padding: 1rem;
+            }
+            .selection-count {
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="header-container">
+            <div class="logo-section">
+                <div class="logo-icon">
+                    <i class="fa-solid fa-database"></i>
+                </div>
+                <div class="logo-title">BigQuery Release Radar</div>
+            </div>
+            <div class="header-actions">
+                <button class="btn btn-theme-toggle" id="themeToggle" title="Toggle Light/Dark Mode">
+                    <i class="fa-solid fa-moon"></i>
+                </button>
+                <button class="btn btn-primary" id="refreshBtn">
+                    <i class="fa-solid fa-arrows-rotate" id="refreshIcon"></i>
+                    Refresh
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <!-- Search & Filter Controls -->
+        <div class="controls-panel">
+            <div class="search-bar">
+                <i class="fa-solid fa-magnifying-glass"></i>
+                <input type="text" id="searchInput" class="search-input" placeholder="Search updates by keyword...">
+            </div>
+            <div class="filters-container">
+                <span class="filter-label">Filter by type:</span>
+                <button class="filter-chip active" data-type="all">All Updates</button>
+                <button class="filter-chip" data-type="feature">Features</button>
+                <button class="filter-chip" data-type="announcement">Announcements</button>
+                <button class="filter-chip" data-type="issue">Issues</button>
+                <button class="filter-chip" data-type="deprecation">Deprecations</button>
+            </div>
+        </div>
+
+        <!-- Dynamic Container for Release Updates -->
+        <div class="releases-container" id="releasesContainer">
+            <!-- Loading, Error or Content states will be rendered here -->
+            <div class="loading-state">
+                <i class="fa-solid fa-arrows-rotate spinner state-icon"></i>
+                <h3 class="state-title">Fetching Release Notes</h3>
+                <p class="state-desc">Connecting to Google Cloud feeds to load the latest BigQuery updates...</p>
+            </div>
+        </div>
+    </main>
+
+    <!-- Floating Action Bar for Multi-select/Tweeting -->
+    <div class="floating-action-bar" id="floatingBar">
+        <div class="selection-count" id="selectionCount">0 updates selected</div>
+        <div style="display: flex; gap: 0.75rem;">
+            <button class="btn" id="clearSelectionBtn">Clear</button>
+            <button class="btn btn-primary btn-tweet-action" id="tweetSelectedBtn">
+                <i class="fa-brands fa-x-twitter"></i> Tweet Selected
+            </button>
+        </div>
+    </div>
+
+    <!-- Tweet Customizer Modal -->
+    <div class="modal-overlay" id="tweetModal">
+        <div class="modal-container">
+            <div class="modal-header">
+                <h3 class="modal-title">
+                    <i class="fa-brands fa-x-twitter" style="color: #1d9bf0;"></i> Compose Update Tweet
+                </h3>
+                <button class="modal-close" id="closeModalBtn">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <textarea class="tweet-preview-area" id="tweetContent" placeholder="What's happening?"></textarea>
+            </div>
+            <div class="modal-footer">
+                <div class="char-counter" id="charCounter">0 / 280</div>
+                <button class="btn btn-primary btn-tweet-action" id="confirmTweetBtn">
+                    Tweet
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // State variables
+        let rawEntries = [];
+        let parsedUpdates = [];
+        let selectedUpdateIds = new Set();
+        let currentFilter = 'all';
+        let searchQuery = '';
+
+        // DOM elements
+        const releasesContainer = document.getElementById('releasesContainer');
+        const refreshBtn = document.getElementById('refreshBtn');
+        const refreshIcon = document.getElementById('refreshIcon');
+        const searchInput = document.getElementById('searchInput');
+        const filterChips = document.querySelectorAll('.filter-chip');
+        const themeToggle = document.getElementById('themeToggle');
+        const floatingBar = document.getElementById('floatingBar');
+        const selectionCount = document.getElementById('selectionCount');
+        const clearSelectionBtn = document.getElementById('clearSelectionBtn');
+        const tweetSelectedBtn = document.getElementById('tweetSelectedBtn');
+        
+        // Modal elements
+        const tweetModal = document.getElementById('tweetModal');
+        const tweetContent = document.getElementById('tweetContent');
+        const charCounter = document.getElementById('charCounter');
+        const closeModalBtn = document.getElementById('closeModalBtn');
+        const confirmTweetBtn = document.getElementById('confirmTweetBtn');
+
+        // Theme initialization
+        if (localStorage.getItem('theme') === 'light') {
+            document.documentElement.setAttribute('data-theme', 'light');
+            themeToggle.innerHTML = '<i class="fa-solid fa-sun"></i>';
+        }
+
+        themeToggle.addEventListener('click', () => {
+            const currentTheme = document.documentElement.getAttribute('data-theme');
+            if (currentTheme === 'light') {
+                document.documentElement.removeAttribute('data-theme');
+                themeToggle.innerHTML = '<i class="fa-solid fa-moon"></i>';
+                localStorage.setItem('theme', 'dark');
+            } else {
+                document.documentElement.setAttribute('data-theme', 'light');
+                themeToggle.innerHTML = '<i class="fa-solid fa-sun"></i>';
+                localStorage.setItem('theme', 'light');
+            }
+        });
+
+        // Parse HTML release notes content into sub-updates
+        function parseEntryContent(contentHtml, date, link, entryIdx) {
+            const temp = document.createElement('div');
+            temp.innerHTML = contentHtml;
+            
+            const items = [];
+            let currentType = 'General';
+            let currentHtml = '';
+            let subIdx = 0;
+            
+            // Loop through child nodes to split by headers (h3 etc.)
+            for (let child of temp.childNodes) {
+                if (child.nodeType === Node.ELEMENT_NODE && /^H[1-6]$/i.test(child.tagName)) {
+                    if (currentHtml.trim()) {
+                        items.push({
+                            id: `${entryIdx}-${subIdx++}`,
+                            type: currentType,
+                            content: currentHtml.trim(),
+                            date: date,
+                            link: link
+                        });
+                    }
+                    currentType = child.textContent.trim();
+                    currentHtml = '';
+                } else {
+                    if (child.nodeType === Node.ELEMENT_NODE) {
+                        currentHtml += child.outerHTML;
+                    } else if (child.nodeType === Node.TEXT_NODE) {
+                        currentHtml += child.textContent;
+                    }
+                }
+            }
+            
+            if (currentHtml.trim()) {
+                items.push({
+                    id: `${entryIdx}-${subIdx++}`,
+                    type: currentType,
+                    content: currentHtml.trim(),
+                    date: date,
+                    link: link
+                });
+            }
+            
+            return items;
+        }
+
+        // Fetch feed from Flask API
+        async function fetchReleaseNotes() {
+            refreshIcon.classList.add('spinner');
+            refreshBtn.disabled = true;
+            
+            try {
+                const response = await fetch('/api/releases');
+                const data = await response.json();
+                
+                if (data.status === 'success') {
+                    rawEntries = data.entries;
+                    processFeedEntries();
+                } else {
+                    showErrorState(data.message || 'Failed to fetch release notes.');
+                }
+            } catch (error) {
+                showErrorState(error.message || 'A network error occurred.');
+            } finally {
+                refreshIcon.classList.remove('spinner');
+                refreshBtn.disabled = false;
+            }
+        }
+
+        // Process XML entries to list of updates
+        function processFeedEntries() {
+            parsedUpdates = [];
+            selectedUpdateIds.clear();
+            updateFloatingBar();
+
+            rawEntries.forEach((entry, idx) => {
+                const subUpdates = parseEntryContent(entry.content, entry.title, entry.link, idx);
+                parsedUpdates.push(...subUpdates);
+            });
+
+            renderUpdates();
+        }
+
+        // Show error state
+        function showErrorState(msg) {
+            releasesContainer.innerHTML = `
+                <div class="error-state">
+                    <i class="fa-solid fa-triangle-exclamation state-icon"></i>
+                    <h3 class="state-title">Failed to load feed</h3>
+                    <p class="state-desc">${msg}</p>
+                    <button class="btn btn-primary" style="margin-top: 1.5rem;" onclick="fetchReleaseNotes()">
+                        <i class="fa-solid fa-arrows-rotate"></i> Try Again
+                    </button>
+                </div>
+            `;
+        }
+
+        // Helper to format text plain text from HTML
+        function getPlainText(html) {
+            const temp = document.createElement('div');
+            temp.innerHTML = html;
+            return temp.textContent || temp.innerText || "";
+        }
+
+        // Render function
+        function renderUpdates() {
+            // Filter list
+            let filtered = parsedUpdates.filter(update => {
+                // Type filter
+                if (currentFilter !== 'all' && update.type.toLowerCase() !== currentFilter) {
+                    return false;
+                }
+                // Search filter
+                if (searchQuery) {
+                    const plainContent = getPlainText(update.content).toLowerCase();
+                    const typeMatch = update.type.toLowerCase().includes(searchQuery);
+                    const dateMatch = update.date.toLowerCase().includes(searchQuery);
+                    const contentMatch = plainContent.includes(searchQuery);
+                    return typeMatch || dateMatch || contentMatch;
+                }
+                return true;
+            });
+
+            if (filtered.length === 0) {
+                releasesContainer.innerHTML = `
+                    <div class="empty-state">
+                        <i class="fa-solid fa-folder-open state-icon"></i>
+                        <h3 class="state-title">No release updates found</h3>
+                        <p class="state-desc">Try modifying your filters or search keywords.</p>
+                    </div>
+                `;
+                return;
+            }
+
+            // Group by Date
+            const grouped = {};
+            filtered.forEach(update => {
+                if (!grouped[update.date]) {
+                    grouped[update.date] = [];
+                }
+                grouped[update.date].push(update);
+            });
+
+            // Build HTML
+            let html = '';
+            for (let date in grouped) {
+                html += `<div class="card-date-header">${date}</div>`;
+                
+                grouped[date].forEach(update => {
+                    const isSelected = selectedUpdateIds.has(update.id);
+                    const typeClass = update.type.toLowerCase();
+                    
+                    let badgeClass = 'badge-general';
+                    if (typeClass.includes('feature')) badgeClass = 'badge-feature';
+                    else if (typeClass.includes('announcement')) badgeClass = 'badge-announcement';
+                    else if (typeClass.includes('issue')) badgeClass = 'badge-issue';
+                    else if (typeClass.includes('deprecation')) badgeClass = 'badge-deprecation';
+
+                    html += `
+                        <div class="update-card ${isSelected ? 'selected' : ''}" data-id="${update.id}">
+                            <div class="card-selector">
+                                <div class="checkbox-custom">
+                                    <i class="fa-solid fa-check"></i>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <div class="card-header-row">
+                                    <span class="badge ${badgeClass}">${update.type}</span>
+                                    <div class="card-meta">
+                                        <i class="fa-regular fa-calendar"></i> ${update.date}
+                                    </div>
+                                </div>
+                                <div class="card-content">
+                                    ${update.content}
+                                </div>
+                                <div class="card-hover-actions">
+                                    <button class="btn btn-tweet-action btn-tweet-card" data-id="${update.id}">
+                                        <i class="fa-brands fa-x-twitter"></i> Tweet Update
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                });
+            }
+
+            releasesContainer.innerHTML = html;
+
+            // Attach listeners to newly created elements
+            document.querySelectorAll('.update-card').forEach(card => {
+                card.addEventListener('click', (e) => {
+                    // Avoid triggering selection toggles when clicking a link or the tweet button directly
+                    if (e.target.closest('a') || e.target.closest('.btn-tweet-card')) {
+                        return;
+                    }
+                    const id = card.getAttribute('data-id');
+                    toggleSelection(id);
+                });
+            });
+
+            document.querySelectorAll('.btn-tweet-card').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    const id = btn.getAttribute('data-id');
+                    openTweetComposerForSingle(id);
+                });
+            });
+        }
+
+        // Toggle select/deselect
+        function toggleSelection(id) {
+            if (selectedUpdateIds.has(id)) {
+                selectedUpdateIds.delete(id);
+            } else {
+                selectedUpdateIds.add(id);
+            }
+            
+            // Re-render only classes on cards to make it responsive
+            const card = document.querySelector(`.update-card[data-id="${id}"]`);
+            if (card) {
+                if (selectedUpdateIds.has(id)) {
+                    card.classList.add('selected');
+                } else {
+                    card.classList.remove('selected');
+                }
+            }
+
+            updateFloatingBar();
+        }
+
+        // Update floating bar
+        function updateFloatingBar() {
+            const count = selectedUpdateIds.size;
+            selectionCount.textContent = `${count} update${count !== 1 ? 's' : ''} selected`;
+            
+            if (count > 0) {
+                floatingBar.classList.add('visible');
+            } else {
+                floatingBar.classList.remove('visible');
+            }
+        }
+
+        // Clear Selection
+        clearSelectionBtn.addEventListener('click', () => {
+            selectedUpdateIds.clear();
+            document.querySelectorAll('.update-card.selected').forEach(card => {
+                card.classList.remove('selected');
+            });
+            updateFloatingBar();
+        });
+
+        // Filter handlers
+        filterChips.forEach(chip => {
+            chip.addEventListener('click', () => {
+                filterChips.forEach(c => c.classList.remove('active'));
+                chip.classList.add('active');
+                currentFilter = chip.getAttribute('data-type');
+                renderUpdates();
+            });
+        });
+
+        // Search handler
+        searchInput.addEventListener('input', (e) => {
+            searchQuery = e.target.value.toLowerCase().trim();
+            renderUpdates();
+        });
+
+        // Tweet Composers
+        function openTweetComposerForSingle(id) {
+            const update = parsedUpdates.find(u => u.id === id);
+            if (!update) return;
+
+            const textContent = getPlainText(update.content);
+            const type = update.type.toUpperCase();
+            
+            // Formulate clean tweet text
+            let tweetText = `BigQuery Release: [${type}] (${update.date})\n\n${textContent}`;
+            
+            openModal(tweetText);
+        }
+
+        tweetSelectedBtn.addEventListener('click', () => {
+            if (selectedUpdateIds.size === 0) return;
+            
+            const selected = Array.from(selectedUpdateIds).map(id => parsedUpdates.find(u => u.id === id)).filter(Boolean);
+            
+            // Compose compiled tweet
+            let tweetText = `BigQuery Updates radar summary:\n`;
+            selected.forEach(update => {
+                const textContent = getPlainText(update.content);
+                // Keep it short for list items
+                const summary = textContent.length > 80 ? textContent.substring(0, 77) + '...' : textContent;
+                tweetText += `\n• [${update.type}] ${summary}`;
+            });
+
+            openModal(tweetText);
+        });
+
+        // Modal Functionality
+        function openModal(initialText) {
+            tweetContent.value = initialText;
+            updateCharCount();
+            tweetModal.classList.add('active');
+            tweetContent.focus();
+        }
+
+        function closeModal() {
+            tweetModal.classList.remove('active');
+        }
+
+        function updateCharCount() {
+            const len = tweetContent.value.length;
+            charCounter.textContent = `${len} / 280`;
+            
+            charCounter.className = 'char-counter';
+            if (len > 280) {
+                charCounter.classList.add('danger');
+            } else if (len > 240) {
+                charCounter.classList.add('warning');
+            }
+        }
+
+        tweetContent.addEventListener('input', updateCharCount);
+        closeModalBtn.addEventListener('click', closeModal);
+        tweetModal.addEventListener('click', (e) => {
+            if (e.target === tweetModal) closeModal();
+        });
+
+        confirmTweetBtn.addEventListener('click', () => {
+            const text = tweetContent.value;
+            const url = `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}`;
+            window.open(url, '_blank', 'noopener,noreferrer');
+            closeModal();
+        });
+
+        // Refresh Handler
+        refreshBtn.addEventListener('click', fetchReleaseNotes);
+
+        // Initial load
+        fetchReleaseNotes();
+    </script>
+</body>
+</html>
