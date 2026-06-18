@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BigQuery Release Radar</title>
+    <title>GCP & Gemini Release Radar</title>
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -151,10 +151,6 @@
             box-shadow: 0 8px 20px var(--accent-glow);
         }
 
-        .btn:active {
-            transform: translateY(0);
-        }
-
         .btn-primary {
             background: linear-gradient(135deg, rgba(56, 189, 248, 0.4), rgba(99, 102, 241, 0.4));
             border: 1px solid rgba(255, 255, 255, 0.2);
@@ -197,7 +193,7 @@
             gap: 1.5rem;
         }
 
-        /* Glassmorphic Panel (Dashboard panels) */
+        /* Glassmorphic Panel */
         .glass-panel {
             background: var(--glass-bg);
             backdrop-filter: blur(16px);
@@ -208,7 +204,6 @@
             box-shadow: var(--shadow-primary);
         }
 
-        /* Search input inside Glass */
         .search-bar {
             position: relative;
             width: 100%;
@@ -238,7 +233,6 @@
             box-shadow: 0 0 15px var(--accent-glow);
         }
 
-        /* Filter Chips Vertically in Sidebar */
         .filter-header {
             font-size: 0.8rem;
             text-transform: uppercase;
@@ -293,7 +287,45 @@
             font-weight: bold;
         }
 
-        /* Analytics Panel in Sidebar */
+        /* Feed Source Selectors */
+        .source-selector-container {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .source-btn {
+            flex: 1;
+            padding: 0.5rem;
+            border-radius: 10px;
+            border: 1px solid var(--glass-border);
+            background: rgba(0,0,0,0.15);
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-align: center;
+            cursor: pointer;
+            color: var(--text-muted);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.25rem;
+        }
+
+        .source-btn:hover {
+            background: var(--glass-bg-hover);
+        }
+
+        .source-btn.active {
+            background: var(--glass-bg-active);
+            border-color: var(--accent-color);
+            color: var(--accent-color);
+        }
+
+        .source-btn i {
+            font-size: 1.1rem;
+        }
+
+        /* Analytics Panel */
         .analytics-grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
@@ -359,7 +391,6 @@
             gap: 1.25rem;
             position: relative;
             cursor: pointer;
-            transform-style: preserve-3d;
         }
 
         .update-card:hover {
@@ -411,6 +442,25 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
+        }
+
+        .badges-row {
+            display: flex;
+            gap: 0.5rem;
+            align-items: center;
+        }
+
+        .badge-source {
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid var(--glass-border);
+            font-size: 0.7rem;
+            color: var(--text-secondary);
+            text-transform: capitalize;
+            padding: 0.2rem 0.5rem;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
         }
 
         .badge {
@@ -607,7 +657,6 @@
             gap: 1.25rem;
         }
 
-        /* Template Option Selector in Tweet Modal */
         .template-selector {
             display: flex;
             gap: 0.5rem;
@@ -656,7 +705,6 @@
             box-shadow: 0 0 15px var(--accent-glow);
         }
 
-        /* Hashtags Toggle Area */
         .tags-toggle-area {
             display: flex;
             flex-wrap: wrap;
@@ -688,7 +736,6 @@
             align-items: center;
         }
 
-        /* Spinner & Loaders */
         .spinner {
             animation: spin 1s linear infinite;
         }
@@ -751,6 +798,25 @@
                 </div>
             </div>
 
+            <!-- Feed Source Selector (BigQuery vs Gemini) -->
+            <div class="glass-panel" style="padding: 1rem;">
+                <div class="filter-header">Radar Feeds</div>
+                <div class="source-selector-container">
+                    <div class="source-btn active" data-source="all">
+                        <i class="fa-solid fa-globe"></i>
+                        <span>All Feeds</span>
+                    </div>
+                    <div class="source-btn" data-source="bigquery">
+                        <i class="fa-solid fa-database"></i>
+                        <span>BigQuery</span>
+                    </div>
+                    <div class="source-btn" data-source="gemini">
+                        <i class="fa-solid fa-wand-magic-sparkles"></i>
+                        <span>Gemini API</span>
+                    </div>
+                </div>
+            </div>
+
             <!-- Categories Glass Container -->
             <div class="glass-panel">
                 <div class="filter-header">Radar Channels</div>
@@ -803,7 +869,7 @@
             <div class="glass-panel loading-state">
                 <i class="fa-solid fa-circle-notch spinner state-icon"></i>
                 <h3>Retrieving Live Feed</h3>
-                <p style="color: var(--text-muted); font-size:0.9rem; margin-top:0.5rem;">Syncing latest BigQuery updates...</p>
+                <p style="color: var(--text-muted); font-size:0.9rem; margin-top:0.5rem;">Syncing latest GCP and Gemini API updates...</p>
             </div>
         </div>
     </main>
@@ -844,6 +910,7 @@
                 <div class="filter-header">Include Tags</div>
                 <div class="tags-toggle-area" id="hashtagsContainer">
                     <span class="tag-toggle-chip active" data-tag="#BigQuery">#BigQuery</span>
+                    <span class="tag-toggle-chip" data-tag="#Gemini">#Gemini</span>
                     <span class="tag-toggle-chip active" data-tag="#GoogleCloud">#GoogleCloud</span>
                     <span class="tag-toggle-chip" data-tag="#GCP">#GCP</span>
                     <span class="tag-toggle-chip" data-tag="#DataEngineering">#DataEngineering</span>
@@ -863,6 +930,7 @@
         let starredIds = new Set(JSON.parse(localStorage.getItem('starred_ids') || '[]'));
         let selectedIds = new Set();
         let currentFilter = 'all';
+        let currentSource = 'all';
         let searchQuery = '';
         let currentTemplate = 'short';
 
@@ -880,7 +948,7 @@
         const searchInput = document.getElementById('searchInput');
         const themeToggle = document.getElementById('themeToggle');
         
-        // Floating bar & select
+        // Floating bar
         const floatingBar = document.getElementById('floatingBar');
         const selectionCount = document.getElementById('selectionCount');
         const clearBtn = document.getElementById('clearBtn');
@@ -910,7 +978,7 @@
             }
         });
 
-        // Split HTML contents by header elements
+        // Split HTML contents by header elements (BigQuery entries only)
         function parseEntryHTML(html, date, url, entryIdx) {
             const container = document.createElement('div');
             container.innerHTML = html;
@@ -924,7 +992,8 @@
                 if (child.nodeType === Node.ELEMENT_NODE && /^H[1-6]$/i.test(child.tagName)) {
                     if (content.trim()) {
                         results.push({
-                            id: `up-${entryIdx}-${subIdx++}`,
+                            id: `bq-${entryIdx}-${subIdx++}`,
+                            source: 'bigquery',
                             type: type,
                             content: content.trim(),
                             date: date,
@@ -943,7 +1012,8 @@
             }
             if (content.trim()) {
                 results.push({
-                    id: `up-${entryIdx}-${subIdx++}`,
+                    id: `bq-${entryIdx}-${subIdx++}`,
+                    source: 'bigquery',
                     type: type,
                     content: content.trim(),
                     date: date,
@@ -953,12 +1023,54 @@
             return results;
         }
 
-        // Process XML entries to Radar Updates
+        // Process XML/HTML entries to Radar Updates
         function processEntries() {
             updates = [];
+            selectedIds.clear();
+            updateFloatingBar();
+
             rawEntries.forEach((entry, idx) => {
-                const parts = parseEntryHTML(entry.content, entry.title, entry.link, idx);
-                updates.push(...parts);
+                if (entry.source === 'bigquery') {
+                    const parts = parseEntryHTML(entry.content, entry.title, entry.link, idx);
+                    updates.push(...parts);
+                } else if (entry.source === 'gemini') {
+                    // Extract list items from Gemini to create separate cards
+                    const container = document.createElement('div');
+                    container.innerHTML = entry.content;
+                    const items = container.querySelectorAll('li');
+                    
+                    if (items.length > 0) {
+                        items.forEach((item, subIdx) => {
+                            let type = 'Announcement';
+                            const strong = item.querySelector('strong');
+                            if (strong) {
+                                const text = strong.textContent.toLowerCase();
+                                if (text.includes('deprecat')) type = 'Deprecation';
+                                else if (text.includes('introduc') || text.includes('support') || text.includes('new') || text.includes('preview') || text.includes('launch')) type = 'Feature';
+                                else if (text.includes('issue') || text.includes('fix') || text.includes('error')) type = 'Issue';
+                            }
+                            
+                            updates.push({
+                                id: `gem-${idx}-${subIdx}`,
+                                source: 'gemini',
+                                type: type,
+                                content: item.innerHTML.trim(),
+                                date: entry.title,
+                                link: entry.link
+                            });
+                        });
+                    } else {
+                        // Fallback if no <li> items are found
+                        updates.push({
+                            id: `gem-${idx}-0`,
+                            source: 'gemini',
+                            type: 'Announcement',
+                            content: entry.content,
+                            date: entry.title,
+                            link: entry.link
+                        });
+                    }
+                }
             });
             updateMetricsAndSidebar();
             renderTimeline();
@@ -976,7 +1088,7 @@
                     localStorage.setItem('bq_feed_cache', JSON.stringify(rawEntries));
                     processEntries();
                 } else {
-                    showError(data.message || 'Error parsing feed XML.');
+                    showError(data.message || 'Error parsing feed payload.');
                 }
             } catch (err) {
                 showError(err.message || 'Network error fetching release notes.');
@@ -987,7 +1099,6 @@
         }
 
         function showError(msg) {
-            // Only show full-screen error if we have no cache loaded
             if (updates.length === 0) {
                 timelineArea.innerHTML = `
                     <div class="glass-panel error-state">
@@ -1002,10 +1113,12 @@
 
         // Update counts and statistics metrics
         function updateMetricsAndSidebar() {
-            // Count badges
             const counts = { all: 0, feature: 0, announcement: 0, issue: 0, deprecation: 0, starred: 0 };
             
-            updates.forEach(up => {
+            // Filter by active source for badge calculations
+            const sourceFiltered = updates.filter(up => currentSource === 'all' || up.source === currentSource);
+
+            sourceFiltered.forEach(up => {
                 counts.all++;
                 const type = up.type.toLowerCase();
                 if (type.includes('feature')) counts.feature++;
@@ -1040,6 +1153,11 @@
         // Render Timeline Cards
         function renderTimeline() {
             let filtered = updates.filter(up => {
+                // Source feed filter
+                if (currentSource !== 'all' && up.source !== currentSource) {
+                    return false;
+                }
+
                 // Channel filter
                 if (currentFilter !== 'all') {
                     if (currentFilter === 'starred') {
@@ -1063,7 +1181,7 @@
             if (filtered.length === 0) {
                 timelineArea.innerHTML = `
                     <div class="glass-panel empty-state">
-                        <i class="fa-solid fa-radar state-icon"></i>
+                        <i class="fa-solid fa-satellite state-icon"></i>
                         <h3>No signals picked up</h3>
                         <p style="color:var(--text-muted); margin-top:0.5rem;">Adjust search filters or star updates to see items.</p>
                     </div>
@@ -1093,6 +1211,14 @@
                     else if (typeClass.includes('issue')) badgeClass = 'badge-issue';
                     else if (typeClass.includes('deprecation')) badgeClass = 'badge-deprecation';
 
+                    // Source indicator badge
+                    let sourceBadge = '';
+                    if (up.source === 'bigquery') {
+                        sourceBadge = `<span class="badge-source"><i class="fa-solid fa-database"></i> BigQuery</span>`;
+                    } else {
+                        sourceBadge = `<span class="badge-source"><i class="fa-solid fa-wand-magic-sparkles"></i> Gemini API</span>`;
+                    }
+
                     html += `
                         <div class="update-card ${isSelected ? 'selected' : ''}" data-id="${up.id}">
                             <div class="card-selector">
@@ -1102,7 +1228,10 @@
                             </div>
                             <div class="card-body">
                                 <div class="card-header-row">
-                                    <span class="badge ${badgeClass}">${up.type}</span>
+                                    <div class="badges-row">
+                                        <span class="badge ${badgeClass}">${up.type}</span>
+                                        ${sourceBadge}
+                                    </div>
                                     <div class="card-actions">
                                         <button class="card-action-btn star-btn ${isStarred ? 'starred' : ''}" data-id="${up.id}" title="Star/Bookmark update">
                                             <i class="fa-${isStarred ? 'solid' : 'regular'} fa-star"></i>
@@ -1133,7 +1262,7 @@
             document.querySelectorAll('.update-card').forEach(card => {
                 card.addEventListener('click', (e) => {
                     if (e.target.closest('a') || e.target.closest('.card-action-btn')) {
-                        return; // Prevent selection toggle when clicking actions or links
+                        return;
                     }
                     const id = card.getAttribute('data-id');
                     toggleSelection(id);
@@ -1185,7 +1314,7 @@
             updateFloatingBar();
         });
 
-        // Bookmark Star logic
+        // Bookmark logic
         function toggleStar(id, btn) {
             if (starredIds.has(id)) {
                 starredIds.delete(id);
@@ -1198,8 +1327,6 @@
             }
             localStorage.setItem('starred_ids', JSON.stringify(Array.from(starredIds)));
             updateMetricsAndSidebar();
-            
-            // If filter channel is starred, re-render immediately
             if (currentFilter === 'starred') {
                 renderTimeline();
             }
@@ -1215,6 +1342,19 @@
             });
         });
 
+        // Feed Source Selector
+        document.querySelectorAll('.source-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.source-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                currentSource = btn.getAttribute('data-source');
+                
+                // Reset active filters counts
+                updateMetricsAndSidebar();
+                renderTimeline();
+            });
+        });
+
         // Search Input
         searchInput.addEventListener('input', (e) => {
             searchQuery = e.target.value.toLowerCase().trim();
@@ -1225,6 +1365,22 @@
         let activeTweetIds = [];
         function openTweetModal(ids) {
             activeTweetIds = ids;
+            
+            // Auto-detect and configure hashtags toggle states based on sources
+            const activeUpdates = activeTweetIds.map(id => updates.find(u => u.id === id)).filter(Boolean);
+            const hasBQ = activeUpdates.some(u => u.source === 'bigquery');
+            const hasGemini = activeUpdates.some(u => u.source === 'gemini');
+            
+            // Set tag chips active depending on feed sources selected
+            document.querySelectorAll('.tag-toggle-chip').forEach(chip => {
+                const tag = chip.getAttribute('data-tag');
+                if (tag === '#BigQuery') {
+                    chip.classList.toggle('active', hasBQ);
+                } else if (tag === '#Gemini') {
+                    chip.classList.toggle('active', hasGemini);
+                }
+            });
+
             generateTweetContent();
             updateCharLimit();
             tweetModal.classList.add('active');
@@ -1271,40 +1427,46 @@
             if (currentTemplate === 'short') {
                 if (list.length === 1) {
                     const cleanText = getPlainText(list[0].content);
-                    const headline = `BigQuery: [${list[0].type.toUpperCase()}] (${list[0].date})`;
+                    const sourceName = list[0].source === 'bigquery' ? 'BigQuery' : 'Gemini API';
+                    const headline = `${sourceName}: [${list[0].type.toUpperCase()}] (${list[0].date})`;
                     tweet = `${headline}\n\n${cleanText}`;
                 } else {
-                    tweet = `📡 BigQuery Updates Radar:\n`;
+                    tweet = `📡 Release Radar updates:\n`;
                     list.forEach(up => {
                         const clean = getPlainText(up.content);
                         const summary = clean.length > 70 ? clean.substring(0, 67) + '...' : clean;
-                        tweet += `\n• [${up.type}] ${summary}`;
+                        const src = up.source === 'bigquery' ? 'BQ' : 'Gemini';
+                        tweet += `\n• [${src} ${up.type}] ${summary}`;
                     });
                 }
             } 
             else if (currentTemplate === 'detailed') {
                 if (list.length === 1) {
                     const cleanText = getPlainText(list[0].content);
-                    tweet = `🚨 New Google BigQuery Release Update!\n📅 Date: ${list[0].date}\n🏷️ Type: ${list[0].type}\n\n📢 Description:\n${cleanText}`;
+                    const sourceFull = list[0].source === 'bigquery' ? 'Google BigQuery' : 'Google Gemini API';
+                    tweet = `🚨 New ${sourceFull} Release Update!\n📅 Date: ${list[0].date}\n🏷️ Type: ${list[0].type}\n\n📢 Description:\n${cleanText}`;
                 } else {
-                    tweet = `🔥 Latest BigQuery Release Summary (${list.length} updates verified):\n`;
+                    tweet = `🔥 Latest Tech Releases Summary (${list.length} updates):\n`;
                     list.forEach(up => {
                         const clean = getPlainText(up.content);
                         const summary = clean.length > 80 ? clean.substring(0, 77) + '...' : clean;
-                        tweet += `\n- ${up.type}: ${summary}`;
+                        const src = up.source === 'bigquery' ? 'BigQuery' : 'Gemini';
+                        tweet += `\n- [${src}] ${up.type}: ${summary}`;
                     });
                 }
             } 
             else if (currentTemplate === 'hashtag') {
                 if (list.length === 1) {
                     const cleanText = getPlainText(list[0].content);
-                    tweet = `⚡ GCP Release Note Alert: BigQuery ${list[0].type.toLowerCase()} update is live (${list[0].date}).\n\n👉 Detail: ${cleanText}`;
+                    const name = list[0].source === 'bigquery' ? 'BigQuery' : 'Gemini API';
+                    tweet = `⚡ Release Alert: ${name} ${list[0].type.toLowerCase()} update is live (${list[0].date}).\n\n👉 Detail: ${cleanText}`;
                 } else {
-                    tweet = `🚀 New features and updates on Google Cloud BigQuery:\n`;
+                    tweet = `🚀 New releases tracked across BigQuery & Gemini API:\n`;
                     list.forEach(up => {
                         const clean = getPlainText(up.content);
                         const summary = clean.length > 60 ? clean.substring(0, 57) + '...' : clean;
-                        tweet += `\n▪️ ${summary}`;
+                        const src = up.source === 'bigquery' ? 'BQ' : 'Gemini';
+                        tweet += `\n▪️ [${src}] ${summary}`;
                     });
                 }
             }
@@ -1321,7 +1483,6 @@
             tweetTextarea.value = tweet;
         }
 
-        // Live Character counter limits
         function updateCharLimit() {
             const count = tweetTextarea.value.length;
             charCount.textContent = `${count} / 280`;
@@ -1330,7 +1491,6 @@
 
         tweetTextarea.addEventListener('input', updateCharLimit);
 
-        // Submit action opens Twitter Intent
         sendTweetBtn.addEventListener('click', () => {
             const text = tweetTextarea.value;
             const url = `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}`;
@@ -1338,12 +1498,10 @@
             closeModal();
         });
 
-        // Floating tweet selected trigger
         tweetBtn.addEventListener('click', () => {
             openTweetModal(Array.from(selectedIds));
         });
 
-        // Refresh action
         refreshBtn.addEventListener('click', fetchFeed);
 
         // Initial setup
