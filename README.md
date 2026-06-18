@@ -67,3 +67,10 @@ Built using a **Python Flask** backend and a high-fidelity **Glassmorphism HTML/
 ├── .gitignore              # Ignored files (venv, caches, etc.)
 └── README.md               # Updated project documentation
 ```
+
+---
+
+## 👤 Author
+
+- **Abhimanyu Sah** - [@AbhimanyuSah-DEV](https://github.com/AbhimanyuSah-DEV)
+
