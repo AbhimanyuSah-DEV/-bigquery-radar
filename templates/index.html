@@ -1030,10 +1030,11 @@
             updateFloatingBar();
 
             rawEntries.forEach((entry, idx) => {
-                if (entry.source === 'bigquery') {
+                const source = entry.source || 'bigquery';
+                if (source === 'bigquery') {
                     const parts = parseEntryHTML(entry.content, entry.title, entry.link, idx);
                     updates.push(...parts);
-                } else if (entry.source === 'gemini') {
+                } else if (source === 'gemini') {
                     // Extract list items from Gemini to create separate cards
                     const container = document.createElement('div');
                     container.innerHTML = entry.content;
