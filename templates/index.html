@@ -927,7 +927,12 @@
         // Data variables
         let rawEntries = [];
         let updates = [];
-        let starredIds = new Set(JSON.parse(localStorage.getItem('starred_ids') || '[]'));
+        let starredIds = new Set();
+        try {
+            starredIds = new Set(JSON.parse(localStorage.getItem('starred_ids') || '[]'));
+        } catch (e) {
+            console.error("Error parsing starred_ids:", e);
+        }
         let selectedIds = new Set();
         let currentFilter = 'all';
         let currentSource = 'all';
@@ -937,8 +942,13 @@
         // Load Cache Immediately
         const cachedEntries = localStorage.getItem('bq_feed_cache');
         if (cachedEntries) {
-            rawEntries = JSON.parse(cachedEntries);
-            processEntries();
+            try {
+                rawEntries = JSON.parse(cachedEntries);
+                processEntries();
+            } catch (e) {
+                console.error("Error parsing BQ cache:", e);
+                localStorage.removeItem('bq_feed_cache');
+            }
         }
 
         // DOM elements
@@ -1030,18 +1040,24 @@
             updateFloatingBar();
 
             rawEntries.forEach((entry, idx) => {
+                if (!entry) return;
                 const source = entry.source || 'bigquery';
+                const content = entry.content || '';
+                const title = entry.title || '';
+                const link = entry.link || '';
+                
                 if (source === 'bigquery') {
-                    const parts = parseEntryHTML(entry.content, entry.title, entry.link, idx);
+                    const parts = parseEntryHTML(content, title, link, idx);
                     updates.push(...parts);
                 } else if (source === 'gemini') {
                     // Extract list items from Gemini to create separate cards
                     const container = document.createElement('div');
-                    container.innerHTML = entry.content;
+                    container.innerHTML = content;
                     const items = container.querySelectorAll('li');
                     
                     if (items.length > 0) {
                         items.forEach((item, subIdx) => {
+                            if (!item) return;
                             let type = 'Announcement';
                             const strong = item.querySelector('strong');
                             if (strong) {
@@ -1056,8 +1072,8 @@
                                 source: 'gemini',
                                 type: type,
                                 content: item.innerHTML.trim(),
-                                date: entry.title,
-                                link: entry.link
+                                date: title,
+                                link: link
                             });
                         });
                     } else {
@@ -1066,9 +1082,9 @@
                             id: `gem-${idx}-0`,
                             source: 'gemini',
                             type: 'Announcement',
-                            content: entry.content,
-                            date: entry.title,
-                            link: entry.link
+                            content: content,
+                            date: title,
+                            link: link
                         });
                     }
                 }
