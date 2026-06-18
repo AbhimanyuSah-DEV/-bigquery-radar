@@ -1,28 +1,32 @@
 # BigQuery Release Radar 📡
 
-A premium, modern web dashboard to fetch, view, filter, and tweet the latest official Google BigQuery release notes. 
+A premium, modern web dashboard to fetch, view, filter, bookmark, and tweet the latest official Google BigQuery release notes. 
 
-Built using a **Python Flask** backend and a responsive, vanilla **HTML/CSS/JS** frontend.
+Built using a **Python Flask** backend and a high-fidelity **Glassmorphism HTML/CSS/JS** frontend.
 
 ---
 
 ## ✨ Features
 
-- **Automatic Feed Parser**: Connects to the official Google Cloud RSS feed, fetches, parses, and splits daily entries containing multiple updates into individual, readable cards.
-- **Sleek Dark Mode**: Designed with a high-fidelity dark-themed design system featuring glassmorphism, responsive grid layout, and custom typography.
-- **Filter & Search**: Instantly filter updates by type badges (*Feature*, *Announcement*, *Issue*, *Deprecation*, *General*) or use keyword search.
-- **Tweet Selection Mode**:
-  - Select one or more updates using checkboxes to compile a single combined tweet.
-  - Direct **"Tweet Update"** buttons on individual cards for quick sharing.
-  - Real-time character count preview with warnings when approaching/exceeding X's 280-character limit.
-- **Dynamic Refresh**: Live refresh button with status indicator and spinner.
+- **💎 Premium Glassmorphic Design**: 
+  - Obsidian-space theme utilizing frosted glass panels (`backdrop-filter: blur(16px)`), neon glows, and thin radiant borders.
+  - Interactive smooth animations (scaling hover states, rotating loaders, and springy theme switches).
+- **📡 Automatic Feed Parser**: Connects to the official Google Cloud XML feed, fetches, parses, and splits daily entries containing multiple updates into individual, category-tagged cards.
+- **⭐ Bookmarks/Favorites**: Star individual release notes to save them locally (persisted via `localStorage`). Easily browse them using the **Bookmarked** filter channel in the sidebar.
+- **📊 Live Insights/Analytics**: Collapsible analytics panel displaying stats on parsed releases and features count.
+- **🐦 Enhanced Tweet Composer**:
+  - Select one or more cards to compile an compiled digest tweet, or tweet cards individually.
+  - Dynamic template selector: Choose between **⚡ Punchy**, **📝 Detailed**, and **💡 Developer** layouts.
+  - Interactive hashtag chips (`#BigQuery`, `#GoogleCloud`, `#GCP`) to toggle tags instantly before launching.
+  - Real-time character count preview with warnings for X's 280-character limit.
+- **⚡ Smart Caching**: Feeds are cached in local storage for instant loads on startup, refreshing seamlessly in the background.
 
 ---
 
 ## 🛠️ Tech Stack
 
-- **Backend**: Python, Flask (standard library XML element parsing for zero external parser dependencies)
-- **Frontend**: Vanilla CSS variables, HTML5 Semantic Tags, JavaScript (ES6+), FontAwesome Icons, Google Fonts (Outfit & Plus Jakarta Sans)
+- **Backend**: Python, Flask (standard library XML parsing for zero external parser dependencies)
+- **Frontend**: Glassmorphism CSS variables, HTML5 Semantic Elements, JavaScript (ES6+), FontAwesome Icons, Google Fonts (Outfit & Plus Jakarta Sans)
 
 ---
 
@@ -59,7 +63,7 @@ Built using a **Python Flask** backend and a responsive, vanilla **HTML/CSS/JS**
 ```text
 ├── app.py                  # Flask application & Feed API Endpoint
 ├── templates/
-│   └── index.html          # Core responsive UI with custom XML feed parser & Tweet Composer
+│   └── index.html          # Core Glassmorphic UI with caching, bookmarks & tweet templates
 ├── .gitignore              # Ignored files (venv, caches, etc.)
-└── README.md               # Project documentation
+└── README.md               # Updated project documentation
 ```
