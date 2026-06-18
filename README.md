@@ -4,6 +4,8 @@ A premium, modern web dashboard to fetch, view, filter, bookmark, and tweet the 
 
 Built using a **Python Flask** backend and a high-fidelity **Glassmorphism HTML/CSS/JS** frontend.
 
+🔗 **Live Demo**: [https://bigquery-radar.vercel.app/](https://bigquery-radar.vercel.app/)
+
 ---
 
 ## ✨ Features
