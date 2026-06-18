@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BigQuery Release Notes Hub</title>
+    <title>BigQuery Release Radar</title>
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -13,63 +13,75 @@
     
     <style>
         :root {
-            --bg-primary: #0b0f19;
-            --bg-secondary: #161c2c;
-            --bg-tertiary: #1e2640;
-            --accent-color: #38bdf8; /* Sky Blue */
-            --accent-glow: rgba(56, 189, 248, 0.15);
-            --text-primary: #f8fafc;
-            --text-secondary: #94a3b8;
-            --text-muted: #64748b;
-            --border-color: #2e3c60;
-            --card-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5);
+            /* Glassmorphic Dark Theme (Default) */
+            --bg-gradient: radial-gradient(circle at 50% 0%, #0f1524 0%, #070a12 100%);
+            --glass-bg: rgba(15, 23, 42, 0.45);
+            --glass-bg-hover: rgba(30, 41, 59, 0.6);
+            --glass-bg-active: rgba(56, 189, 248, 0.08);
+            --glass-border: rgba(255, 255, 255, 0.07);
+            --glass-border-hover: rgba(56, 189, 248, 0.3);
             
-            /* Tag Colors */
-            --color-feature: #10b981; /* Emerald */
-            --color-announcement: #3b82f6; /* Blue */
-            --color-issue: #ef4444; /* Red */
-            --color-deprecation: #f59e0b; /* Amber */
-            --color-general: #8b5cf6; /* Purple */
+            --accent-color: #38bdf8; /* Sky Blue */
+            --accent-glow: rgba(56, 189, 248, 0.25);
+            --text-primary: #f8fafc;
+            --text-secondary: #cbd5e1;
+            --text-muted: #64748b;
+            --border-glow: rgba(255, 255, 255, 0.05);
+            --shadow-primary: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+            
+            /* Tag Glow Colors */
+            --color-feature: #10b981;
+            --color-announcement: #3b82f6;
+            --color-issue: #ef4444;
+            --color-deprecation: #f59e0b;
+            --color-general: #8b5cf6;
         }
 
         [data-theme="light"] {
-            --bg-primary: #f8fafc;
-            --bg-secondary: #ffffff;
-            --bg-tertiary: #f1f5f9;
+            /* Glassmorphic Light Theme */
+            --bg-gradient: radial-gradient(circle at 50% 0%, #f1f5f9 0%, #cbd5e1 100%);
+            --glass-bg: rgba(255, 255, 255, 0.4);
+            --glass-bg-hover: rgba(255, 255, 255, 0.65);
+            --glass-bg-active: rgba(2, 132, 199, 0.08);
+            --glass-border: rgba(15, 23, 42, 0.08);
+            --glass-border-hover: rgba(2, 132, 199, 0.4);
+            
             --accent-color: #0284c7;
-            --accent-glow: rgba(2, 132, 199, 0.1);
+            --accent-glow: rgba(2, 132, 199, 0.15);
             --text-primary: #0f172a;
-            --text-secondary: #475569;
-            --text-muted: #94a3b8;
-            --border-color: #e2e8f0;
-            --card-shadow: 0 10px 25px -15px rgba(0, 0, 0, 0.1);
+            --text-secondary: #334155;
+            --text-muted: #64748b;
+            --border-glow: rgba(0, 0, 0, 0.02);
+            --shadow-primary: 0 8px 32px 0 rgba(31, 38, 135, 0.08);
         }
 
         * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
-            transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease;
+            transition: background 0.3s ease, border 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
         }
 
         body {
             font-family: 'Plus Jakarta Sans', sans-serif;
-            background-color: var(--bg-primary);
+            background: var(--bg-gradient);
             color: var(--text-primary);
             min-height: 100vh;
             line-height: 1.6;
-            padding-bottom: 100px; /* Space for the floating actions bar */
+            padding-bottom: 120px;
+            background-attachment: fixed;
         }
 
         header {
-            background-color: var(--bg-secondary);
-            border-bottom: 1px solid var(--border-color);
-            padding: 1.5rem 2rem;
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--glass-border);
+            padding: 1.25rem 2rem;
             position: sticky;
             top: 0;
             z-index: 100;
-            backdrop-filter: blur(12px);
-            background-opacity: 0.9;
+            box-shadow: var(--shadow-primary);
         }
 
         .header-container {
@@ -89,19 +101,19 @@
         .logo-icon {
             background: linear-gradient(135deg, var(--accent-color), #818cf8);
             color: white;
-            width: 40px;
-            height: 40px;
-            border-radius: 10px;
+            width: 42px;
+            height: 42px;
+            border-radius: 12px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.25rem;
+            font-size: 1.35rem;
             box-shadow: 0 4px 15px var(--accent-glow);
         }
 
         .logo-title {
             font-family: 'Outfit', sans-serif;
-            font-size: 1.5rem;
+            font-size: 1.6rem;
             font-weight: 700;
             background: linear-gradient(to right, var(--text-primary), var(--accent-color));
             -webkit-background-clip: text;
@@ -111,73 +123,95 @@
         .header-actions {
             display: flex;
             align-items: center;
-            gap: 1rem;
+            gap: 0.75rem;
         }
 
-        /* Common Button Styles */
+        /* Glassmorphic Buttons */
         .btn {
-            background-color: var(--bg-tertiary);
-            border: 1px solid var(--border-color);
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
             color: var(--text-primary);
             padding: 0.6rem 1.2rem;
-            border-radius: 8px;
+            border-radius: 10px;
             cursor: pointer;
             font-weight: 600;
             font-size: 0.9rem;
             display: inline-flex;
             align-items: center;
             gap: 0.5rem;
-            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            backdrop-filter: blur(4px);
+            -webkit-backdrop-filter: blur(4px);
+            box-shadow: var(--shadow-primary);
         }
 
         .btn:hover {
-            background-color: var(--border-color);
-            transform: translateY(-1px);
+            background: var(--glass-bg-hover);
+            border-color: var(--glass-border-hover);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px var(--accent-glow);
+        }
+
+        .btn:active {
+            transform: translateY(0);
         }
 
         .btn-primary {
-            background: linear-gradient(135deg, var(--accent-color), #6366f1);
+            background: linear-gradient(135deg, rgba(56, 189, 248, 0.4), rgba(99, 102, 241, 0.4));
+            border: 1px solid rgba(255, 255, 255, 0.2);
             color: white;
-            border: none;
-            box-shadow: 0 4px 15px var(--accent-glow);
         }
 
         .btn-primary:hover {
-            background: linear-gradient(135deg, #0ea5e9, #4f46e5);
-            box-shadow: 0 6px 20px var(--accent-glow);
+            background: linear-gradient(135deg, rgba(56, 189, 248, 0.6), rgba(99, 102, 241, 0.6));
+            border-color: var(--accent-color);
         }
 
         .btn-theme-toggle {
-            width: 40px;
-            height: 40px;
+            width: 42px;
+            height: 42px;
             padding: 0;
             justify-content: center;
             border-radius: 50%;
         }
 
-        /* Main Content */
+        /* Main Workspace Layout */
         main {
-            max-width: 1000px;
-            margin: 2rem auto;
+            max-width: 1100px;
+            margin: 2.5rem auto;
             padding: 0 1.5rem;
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 2rem;
         }
 
-        /* Controls / Filtering Box */
-        .controls-panel {
-            background-color: var(--bg-secondary);
-            border: 1px solid var(--border-color);
-            border-radius: 16px;
-            padding: 1.5rem;
-            margin-bottom: 2rem;
-            box-shadow: var(--card-shadow);
+        @media (min-width: 900px) {
+            main {
+                grid-template-columns: 280px 1fr;
+            }
+        }
+
+        /* Sidebar Container */
+        .sidebar {
             display: flex;
             flex-direction: column;
-            gap: 1.25rem;
+            gap: 1.5rem;
         }
 
+        /* Glassmorphic Panel (Dashboard panels) */
+        .glass-panel {
+            background: var(--glass-bg);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid var(--glass-border);
+            border-radius: 18px;
+            padding: 1.5rem;
+            box-shadow: var(--shadow-primary);
+        }
+
+        /* Search input inside Glass */
         .search-bar {
             position: relative;
-            flex-grow: 1;
+            width: 100%;
         }
 
         .search-bar i {
@@ -190,178 +224,250 @@
 
         .search-input {
             width: 100%;
-            background-color: var(--bg-primary);
-            border: 1px solid var(--border-color);
+            background: rgba(0, 0, 0, 0.25);
+            border: 1px solid var(--glass-border);
             color: var(--text-primary);
             padding: 0.75rem 1rem 0.75rem 2.7rem;
-            border-radius: 10px;
+            border-radius: 12px;
             font-size: 0.95rem;
             outline: none;
         }
 
         .search-input:focus {
             border-color: var(--accent-color);
-            box-shadow: 0 0 0 3px var(--accent-glow);
+            box-shadow: 0 0 15px var(--accent-glow);
         }
 
-        .filters-container {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 0.5rem;
-            align-items: center;
-        }
-
-        .filter-label {
-            font-size: 0.85rem;
-            color: var(--text-secondary);
-            margin-right: 0.5rem;
-            font-weight: 500;
-        }
-
-        .filter-chip {
-            padding: 0.4rem 0.8rem;
-            border-radius: 20px;
+        /* Filter Chips Vertically in Sidebar */
+        .filter-header {
             font-size: 0.8rem;
-            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--text-muted);
+            margin-bottom: 0.75rem;
+            font-weight: 700;
+        }
+
+        .filter-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .filter-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0.6rem 0.8rem;
+            border-radius: 10px;
             cursor: pointer;
-            border: 1px solid var(--border-color);
-            background-color: var(--bg-primary);
-            color: var(--text-secondary);
+            background: rgba(0, 0, 0, 0.15);
+            border: 1px solid transparent;
+            font-weight: 500;
+            font-size: 0.9rem;
         }
 
-        .filter-chip.active {
-            color: white;
-            border-color: transparent;
+        .filter-item:hover {
+            background: var(--glass-bg-hover);
+            border-color: var(--glass-border);
         }
 
-        .filter-chip.active[data-type="all"] { background-color: var(--accent-color); }
-        .filter-chip.active[data-type="feature"] { background-color: var(--color-feature); }
-        .filter-chip.active[data-type="announcement"] { background-color: var(--color-announcement); }
-        .filter-chip.active[data-type="issue"] { background-color: var(--color-issue); }
-        .filter-chip.active[data-type="deprecation"] { background-color: var(--color-deprecation); }
+        .filter-item.active {
+            background: var(--glass-bg-active);
+            border-color: var(--accent-color);
+            color: var(--accent-color);
+            box-shadow: 0 0 10px rgba(56, 189, 248, 0.1);
+        }
 
-        /* Release list */
-        .releases-container {
+        .count-badge {
+            background: var(--glass-border);
+            padding: 0.1rem 0.4rem;
+            border-radius: 6px;
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+
+        .filter-item.active .count-badge {
+            background: var(--accent-color);
+            color: #070a12;
+            font-weight: bold;
+        }
+
+        /* Analytics Panel in Sidebar */
+        .analytics-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 0.75rem;
+            margin-top: 0.5rem;
+        }
+
+        .stat-card {
+            background: rgba(0, 0, 0, 0.15);
+            border: 1px solid var(--glass-border);
+            border-radius: 10px;
+            padding: 0.75rem;
+            text-align: center;
+        }
+
+        .stat-val {
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--accent-color);
+        }
+
+        .stat-lbl {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+
+        /* Main Timeline List */
+        .content-area {
             display: flex;
             flex-direction: column;
             gap: 1.5rem;
         }
 
-        .card-date-header {
+        .timeline-section-header {
             font-family: 'Outfit', sans-serif;
-            font-size: 1.25rem;
+            font-size: 1.35rem;
             font-weight: 700;
             color: var(--text-primary);
-            margin-top: 1rem;
-            margin-bottom: 0.5rem;
             display: flex;
             align-items: center;
-            gap: 0.75rem;
+            gap: 1rem;
+            margin-top: 1rem;
         }
 
-        .card-date-header::after {
+        .timeline-section-header::after {
             content: '';
             flex-grow: 1;
             height: 1px;
-            background-color: var(--border-color);
+            background: var(--glass-border);
         }
 
-        /* Individual Update Item Card */
+        /* Glassmorphic Update Cards */
         .update-card {
-            background-color: var(--bg-secondary);
-            border: 1px solid var(--border-color);
-            border-radius: 14px;
+            background: var(--glass-bg);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid var(--glass-border);
+            border-radius: 16px;
             padding: 1.5rem;
-            box-shadow: var(--card-shadow);
+            box-shadow: var(--shadow-primary);
+            display: flex;
+            gap: 1.25rem;
             position: relative;
             cursor: pointer;
-            transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
-            display: flex;
-            gap: 1rem;
+            transform-style: preserve-3d;
         }
 
         .update-card:hover {
-            transform: translateY(-2px);
-            border-color: var(--accent-color);
-            box-shadow: 0 8px 25px -5px rgba(0,0,0,0.4);
+            border-color: var(--glass-border-hover);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(56, 189, 248, 0.15);
         }
 
         .update-card.selected {
             border-color: var(--accent-color);
-            background-color: var(--bg-tertiary);
-            box-shadow: 0 0 0 1px var(--accent-color), var(--card-shadow);
+            background: rgba(56, 189, 248, 0.05);
+            box-shadow: 0 0 20px rgba(56, 189, 248, 0.2);
         }
 
-        /* Selection Indicator Checkbox Style */
         .card-selector {
             display: flex;
             align-items: flex-start;
-            padding-top: 0.25rem;
+            padding-top: 0.2rem;
         }
 
         .checkbox-custom {
             width: 20px;
             height: 20px;
-            border-radius: 5px;
-            border: 2px solid var(--border-color);
+            border-radius: 6px;
+            border: 2px solid var(--glass-border);
             display: flex;
             align-items: center;
             justify-content: center;
             color: transparent;
             font-size: 0.75rem;
-            transition: all 0.2s;
+            background: rgba(0, 0, 0, 0.2);
         }
 
         .update-card.selected .checkbox-custom {
-            background-color: var(--accent-color);
+            background: var(--accent-color);
             border-color: var(--accent-color);
-            color: var(--bg-primary);
+            color: #070a12;
+            box-shadow: 0 0 10px var(--accent-glow);
         }
 
         .card-body {
             flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
         }
 
         .card-header-row {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 0.75rem;
         }
 
         .badge {
             font-size: 0.75rem;
             font-weight: 700;
             text-transform: uppercase;
-            padding: 0.25rem 0.6rem;
-            border-radius: 6px;
+            padding: 0.3rem 0.65rem;
+            border-radius: 8px;
             color: white;
             letter-spacing: 0.5px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
         }
 
-        .badge-feature { background-color: var(--color-feature); }
-        .badge-announcement { background-color: var(--color-announcement); }
-        .badge-issue { background-color: var(--color-issue); }
-        .badge-deprecation { background-color: var(--color-deprecation); }
-        .badge-general { background-color: var(--color-general); }
+        .badge-feature { background: var(--color-feature); box-shadow: 0 0 10px rgba(16, 185, 129, 0.25); }
+        .badge-announcement { background: var(--color-announcement); box-shadow: 0 0 10px rgba(59, 130, 246, 0.25); }
+        .badge-issue { background: var(--color-issue); box-shadow: 0 0 10px rgba(239, 68, 68, 0.25); }
+        .badge-deprecation { background: var(--color-deprecation); box-shadow: 0 0 10px rgba(245, 158, 11, 0.25); }
+        .badge-general { background: var(--color-general); box-shadow: 0 0 10px rgba(139, 92, 246, 0.25); }
 
-        .card-meta {
-            font-size: 0.8rem;
+        .card-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .card-action-btn {
+            background: none;
+            border: none;
             color: var(--text-muted);
+            cursor: pointer;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
             display: flex;
             align-items: center;
-            gap: 0.5rem;
+            justify-content: center;
+            font-size: 0.95rem;
+        }
+
+        .card-action-btn:hover {
+            background: rgba(255, 255, 255, 0.08);
+            color: var(--text-primary);
+        }
+
+        .card-action-btn.starred {
+            color: #f59e0b !important;
+            text-shadow: 0 0 8px rgba(245, 158, 11, 0.4);
         }
 
         .card-content {
             color: var(--text-secondary);
             font-size: 0.95rem;
-            line-height: 1.6;
         }
 
         .card-content a {
             color: var(--accent-color);
             text-decoration: none;
+            font-weight: 500;
         }
 
         .card-content a:hover {
@@ -377,117 +483,71 @@
         }
 
         .card-content code {
-            background-color: var(--bg-primary);
-            padding: 0.1rem 0.4rem;
-            border-radius: 4px;
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid var(--glass-border);
+            padding: 0.15rem 0.4rem;
+            border-radius: 6px;
             font-family: monospace;
             font-size: 0.85rem;
             color: var(--accent-color);
         }
 
-        /* Individual Card Hover Tweet Button */
-        .card-hover-actions {
-            margin-top: 1rem;
+        .card-footer {
             display: flex;
-            justify-content: flex-end;
-            opacity: 0.8;
-            transition: opacity 0.2s;
-        }
-
-        .update-card:hover .card-hover-actions {
-            opacity: 1;
-        }
-
-        /* Spinner & Loading */
-        .spinner {
-            animation: spin 1s linear infinite;
-        }
-
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-
-        .loading-state, .error-state, .empty-state {
-            display: flex;
-            flex-direction: column;
+            justify-content: space-between;
             align-items: center;
-            justify-content: center;
-            padding: 4rem 2rem;
-            background-color: var(--bg-secondary);
-            border: 1px solid var(--border-color);
-            border-radius: 16px;
-            text-align: center;
-            box-shadow: var(--card-shadow);
+            margin-top: 0.5rem;
+            border-top: 1px solid var(--glass-border);
+            padding-top: 0.75rem;
         }
 
-        .state-icon {
-            font-size: 3rem;
-            margin-bottom: 1.5rem;
+        .card-date {
+            font-size: 0.8rem;
             color: var(--text-muted);
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
         }
 
-        .loading-state .state-icon {
-            color: var(--accent-color);
-        }
-
-        .error-state .state-icon {
-            color: var(--color-issue);
-        }
-
-        .state-title {
-            font-family: 'Outfit', sans-serif;
-            font-size: 1.25rem;
-            font-weight: 600;
-            margin-bottom: 0.5rem;
-        }
-
-        .state-desc {
-            color: var(--text-secondary);
-            font-size: 0.9rem;
-            max-width: 400px;
-        }
-
-        /* Floating Action Bar for Selection */
-        .floating-action-bar {
+        /* Floating Action Bar */
+        .floating-bar {
             position: fixed;
             bottom: 2rem;
             left: 50%;
             transform: translateX(-50%) translateY(150px);
-            background-color: rgba(22, 28, 44, 0.9);
-            backdrop-filter: blur(16px);
+            background: rgba(15, 23, 42, 0.8);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
             border: 1px solid var(--accent-color);
             padding: 1rem 2rem;
             border-radius: 100px;
-            box-shadow: 0 10px 40px -5px rgba(56, 189, 248, 0.3);
+            box-shadow: 0 10px 40px var(--accent-glow);
             display: flex;
             align-items: center;
             gap: 1.5rem;
             z-index: 1000;
             transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            max-width: calc(100vw - 3rem);
         }
 
-        .floating-action-bar.visible {
+        .floating-bar.visible {
             transform: translateX(-50%) translateY(0);
         }
 
         .selection-count {
-            color: var(--text-primary);
             font-weight: 600;
             font-size: 0.95rem;
-            white-space: nowrap;
         }
 
-        /* Tweet Modal */
+        /* Glassmorphic Modal */
         .modal-overlay {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background-color: rgba(0, 0, 0, 0.75);
-            backdrop-filter: blur(8px);
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
             z-index: 2000;
             display: flex;
             align-items: center;
@@ -503,12 +563,14 @@
         }
 
         .modal-container {
-            background-color: var(--bg-secondary);
-            border: 1px solid var(--border-color);
-            border-radius: 20px;
+            background: rgba(15, 23, 42, 0.75);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            border: 1px solid var(--glass-border);
+            border-radius: 24px;
             width: 90%;
-            max-width: 550px;
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            max-width: 580px;
+            box-shadow: var(--shadow-primary);
             overflow: hidden;
             transform: scale(0.9);
             transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
@@ -519,27 +581,18 @@
         }
 
         .modal-header {
-            padding: 1.25rem 1.5rem;
-            border-bottom: 1px solid var(--border-color);
+            padding: 1.25rem 1.75rem;
+            border-bottom: 1px solid var(--glass-border);
             display: flex;
             justify-content: space-between;
             align-items: center;
-        }
-
-        .modal-title {
-            font-family: 'Outfit', sans-serif;
-            font-size: 1.2rem;
-            font-weight: 700;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
         }
 
         .modal-close {
             background: none;
             border: none;
             color: var(--text-muted);
-            font-size: 1.2rem;
+            font-size: 1.35rem;
             cursor: pointer;
         }
 
@@ -548,80 +601,120 @@
         }
 
         .modal-body {
-            padding: 1.5rem;
+            padding: 1.75rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1.25rem;
         }
 
-        .tweet-preview-area {
-            background-color: var(--bg-primary);
-            border: 1px solid var(--border-color);
+        /* Template Option Selector in Tweet Modal */
+        .template-selector {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .template-chip {
+            flex: 1;
+            padding: 0.5rem;
+            border-radius: 10px;
+            border: 1px solid var(--glass-border);
+            background: rgba(0,0,0,0.2);
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-align: center;
+            cursor: pointer;
+            color: var(--text-muted);
+        }
+
+        .template-chip:hover {
+            background: var(--glass-bg-hover);
+        }
+
+        .template-chip.active {
+            background: var(--glass-bg-active);
+            border-color: var(--accent-color);
+            color: var(--accent-color);
+        }
+
+        .tweet-textarea {
+            width: 100%;
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid var(--glass-border);
             border-radius: 12px;
             padding: 1rem;
-            min-height: 120px;
+            min-height: 140px;
             color: var(--text-primary);
             font-family: 'Plus Jakarta Sans', sans-serif;
             font-size: 1rem;
             line-height: 1.5;
             outline: none;
             resize: vertical;
-            width: 100%;
         }
 
-        .tweet-preview-area:focus {
+        .tweet-textarea:focus {
             border-color: var(--accent-color);
+            box-shadow: 0 0 15px var(--accent-glow);
+        }
+
+        /* Hashtags Toggle Area */
+        .tags-toggle-area {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.4rem;
+        }
+
+        .tag-toggle-chip {
+            padding: 0.35rem 0.65rem;
+            border-radius: 20px;
+            border: 1px solid var(--glass-border);
+            font-size: 0.75rem;
+            font-weight: 600;
+            cursor: pointer;
+            background: rgba(0,0,0,0.15);
+            color: var(--text-muted);
+        }
+
+        .tag-toggle-chip.active {
+            background: rgba(56, 189, 248, 0.15);
+            border-color: var(--accent-color);
+            color: var(--accent-color);
         }
 
         .modal-footer {
-            padding: 1.25rem 1.5rem;
-            border-top: 1px solid var(--border-color);
+            padding: 1.25rem 1.75rem;
+            border-top: 1px solid var(--glass-border);
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
 
-        .char-counter {
-            font-size: 0.85rem;
+        /* Spinner & Loaders */
+        .spinner {
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .loading-state, .error-state, .empty-state {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 4rem 2rem;
+            text-align: center;
+        }
+
+        .state-icon {
+            font-size: 3rem;
+            margin-bottom: 1.5rem;
             color: var(--text-muted);
-            font-weight: 500;
         }
 
-        .char-counter.warning {
-            color: var(--color-deprecation);
-        }
-
-        .char-counter.danger {
-            color: var(--color-issue);
-        }
-
-        .btn-tweet-action {
-            background-color: #1d9bf0;
-            color: white;
-            border: none;
-        }
-
-        .btn-tweet-action:hover {
-            background-color: #1a8cd8;
-        }
-
-        /* Responsive */
-        @media (max-width: 600px) {
-            .header-container {
-                flex-direction: column;
-                gap: 1rem;
-            }
-            .controls-panel {
-                padding: 1rem;
-            }
-            .floating-action-bar {
-                flex-direction: column;
-                gap: 0.75rem;
-                border-radius: 20px;
-                width: 90%;
-                bottom: 1rem;
-                padding: 1rem;
-            }
-            .selection-count {
-                text-align: center;
-            }
+        .loading-state .state-icon {
+            color: var(--accent-color);
         }
     </style>
 </head>
@@ -631,12 +724,12 @@
         <div class="header-container">
             <div class="logo-section">
                 <div class="logo-icon">
-                    <i class="fa-solid fa-database"></i>
+                    <i class="fa-solid fa-satellite-dish"></i>
                 </div>
-                <div class="logo-title">BigQuery Release Radar</div>
+                <div class="logo-title">Release Radar</div>
             </div>
             <div class="header-actions">
-                <button class="btn btn-theme-toggle" id="themeToggle" title="Toggle Light/Dark Mode">
+                <button class="btn btn-theme-toggle" id="themeToggle" title="Toggle Light/Dark Theme">
                     <i class="fa-solid fa-moon"></i>
                 </button>
                 <button class="btn btn-primary" id="refreshBtn">
@@ -648,103 +741,165 @@
     </header>
 
     <main>
-        <!-- Search & Filter Controls -->
-        <div class="controls-panel">
-            <div class="search-bar">
-                <i class="fa-solid fa-magnifying-glass"></i>
-                <input type="text" id="searchInput" class="search-input" placeholder="Search updates by keyword...">
+        <!-- Sidebar Navigation & Filters -->
+        <div class="sidebar">
+            <!-- Search Glass Container -->
+            <div class="glass-panel" style="padding: 1rem;">
+                <div class="search-bar">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                    <input type="text" id="searchInput" class="search-input" placeholder="Search radar...">
+                </div>
             </div>
-            <div class="filters-container">
-                <span class="filter-label">Filter by type:</span>
-                <button class="filter-chip active" data-type="all">All Updates</button>
-                <button class="filter-chip" data-type="feature">Features</button>
-                <button class="filter-chip" data-type="announcement">Announcements</button>
-                <button class="filter-chip" data-type="issue">Issues</button>
-                <button class="filter-chip" data-type="deprecation">Deprecations</button>
+
+            <!-- Categories Glass Container -->
+            <div class="glass-panel">
+                <div class="filter-header">Radar Channels</div>
+                <div class="filter-list">
+                    <div class="filter-item active" data-filter="all">
+                        <span>All Signals</span>
+                        <span class="count-badge" id="count-all">0</span>
+                    </div>
+                    <div class="filter-item" data-filter="feature">
+                        <span><i class="fa-solid fa-circle" style="color: var(--color-feature); font-size:0.6rem; margin-right:0.4rem;"></i> Features</span>
+                        <span class="count-badge" id="count-feature">0</span>
+                    </div>
+                    <div class="filter-item" data-filter="announcement">
+                        <span><i class="fa-solid fa-circle" style="color: var(--color-announcement); font-size:0.6rem; margin-right:0.4rem;"></i> Announcements</span>
+                        <span class="count-badge" id="count-announcement">0</span>
+                    </div>
+                    <div class="filter-item" data-filter="issue">
+                        <span><i class="fa-solid fa-circle" style="color: var(--color-issue); font-size:0.6rem; margin-right:0.4rem;"></i> Issues</span>
+                        <span class="count-badge" id="count-issue">0</span>
+                    </div>
+                    <div class="filter-item" data-filter="deprecation">
+                        <span><i class="fa-solid fa-circle" style="color: var(--color-deprecation); font-size:0.6rem; margin-right:0.4rem;"></i> Deprecations</span>
+                        <span class="count-badge" id="count-deprecation">0</span>
+                    </div>
+                    <div class="filter-item" data-filter="starred">
+                        <span><i class="fa-solid fa-star" style="color: #f59e0b; font-size:0.75rem; margin-right:0.4rem;"></i> Bookmarked</span>
+                        <span class="count-badge" id="count-starred">0</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Insights Glass Container -->
+            <div class="glass-panel">
+                <div class="filter-header">Monthly Analytics</div>
+                <div class="analytics-grid">
+                    <div class="stat-card">
+                        <div class="stat-val" id="stat-total-month">0</div>
+                        <div class="stat-lbl">Signals</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-val" id="stat-features-month">0</div>
+                        <div class="stat-lbl">Features</div>
+                    </div>
+                </div>
             </div>
         </div>
 
-        <!-- Dynamic Container for Release Updates -->
-        <div class="releases-container" id="releasesContainer">
-            <!-- Loading, Error or Content states will be rendered here -->
-            <div class="loading-state">
-                <i class="fa-solid fa-arrows-rotate spinner state-icon"></i>
-                <h3 class="state-title">Fetching Release Notes</h3>
-                <p class="state-desc">Connecting to Google Cloud feeds to load the latest BigQuery updates...</p>
+        <!-- Timeline Updates Content Area -->
+        <div class="content-area" id="timelineArea">
+            <div class="glass-panel loading-state">
+                <i class="fa-solid fa-circle-notch spinner state-icon"></i>
+                <h3>Retrieving Live Feed</h3>
+                <p style="color: var(--text-muted); font-size:0.9rem; margin-top:0.5rem;">Syncing latest BigQuery updates...</p>
             </div>
         </div>
     </main>
 
-    <!-- Floating Action Bar for Multi-select/Tweeting -->
-    <div class="floating-action-bar" id="floatingBar">
-        <div class="selection-count" id="selectionCount">0 updates selected</div>
+    <!-- Selection Actions Bar -->
+    <div class="floating-bar" id="floatingBar">
+        <div class="selection-count" id="selectionCount">0 signals chosen</div>
         <div style="display: flex; gap: 0.75rem;">
-            <button class="btn" id="clearSelectionBtn">Clear</button>
-            <button class="btn btn-primary btn-tweet-action" id="tweetSelectedBtn">
-                <i class="fa-brands fa-x-twitter"></i> Tweet Selected
+            <button class="btn" id="clearBtn">Clear</button>
+            <button class="btn btn-primary" id="tweetBtn" style="background:#1d9bf0; border-color:#1d9bf0;">
+                <i class="fa-brands fa-x-twitter"></i> Tweet Radar
             </button>
         </div>
     </div>
 
-    <!-- Tweet Customizer Modal -->
+    <!-- Glassmorphic Tweet Modals -->
     <div class="modal-overlay" id="tweetModal">
         <div class="modal-container">
             <div class="modal-header">
-                <h3 class="modal-title">
-                    <i class="fa-brands fa-x-twitter" style="color: #1d9bf0;"></i> Compose Update Tweet
+                <h3 style="font-family:'Outfit'; display:flex; align-items:center; gap:0.5rem;">
+                    <i class="fa-brands fa-x-twitter" style="color:#1d9bf0;"></i> Dispatch Tweet
                 </h3>
-                <button class="modal-close" id="closeModalBtn">
-                    <i class="fa-solid fa-xmark"></i>
-                </button>
+                <button class="modal-close" id="closeModalBtn">&times;</button>
             </div>
             <div class="modal-body">
-                <textarea class="tweet-preview-area" id="tweetContent" placeholder="What's happening?"></textarea>
+                <!-- Template Selection -->
+                <div class="filter-header">Select Template Layout</div>
+                <div class="template-selector">
+                    <div class="template-chip active" data-tmpl="short">⚡ Punchy</div>
+                    <div class="template-chip" data-tmpl="detailed">📝 Detailed</div>
+                    <div class="template-chip" data-tmpl="hashtag">💡 Developer</div>
+                </div>
+
+                <!-- Textarea -->
+                <textarea class="tweet-textarea" id="tweetTextarea" placeholder="What's happening?"></textarea>
+
+                <!-- Tags Selection -->
+                <div class="filter-header">Include Tags</div>
+                <div class="tags-toggle-area" id="hashtagsContainer">
+                    <span class="tag-toggle-chip active" data-tag="#BigQuery">#BigQuery</span>
+                    <span class="tag-toggle-chip active" data-tag="#GoogleCloud">#GoogleCloud</span>
+                    <span class="tag-toggle-chip" data-tag="#GCP">#GCP</span>
+                    <span class="tag-toggle-chip" data-tag="#DataEngineering">#DataEngineering</span>
+                </div>
             </div>
             <div class="modal-footer">
-                <div class="char-counter" id="charCounter">0 / 280</div>
-                <button class="btn btn-primary btn-tweet-action" id="confirmTweetBtn">
-                    Tweet
-                </button>
+                <span id="charCount" style="font-size:0.85rem; color:var(--text-muted); font-weight:600;">0 / 280</span>
+                <button class="btn btn-primary" id="sendTweetBtn" style="background:#1d9bf0; border:none; padding: 0.6rem 1.5rem;">Tweet</button>
             </div>
         </div>
     </div>
 
     <script>
-        // State variables
+        // Data variables
         let rawEntries = [];
-        let parsedUpdates = [];
-        let selectedUpdateIds = new Set();
+        let updates = [];
+        let starredIds = new Set(JSON.parse(localStorage.getItem('starred_ids') || '[]'));
+        let selectedIds = new Set();
         let currentFilter = 'all';
         let searchQuery = '';
+        let currentTemplate = 'short';
+
+        // Load Cache Immediately
+        const cachedEntries = localStorage.getItem('bq_feed_cache');
+        if (cachedEntries) {
+            rawEntries = JSON.parse(cachedEntries);
+            processEntries();
+        }
 
         // DOM elements
-        const releasesContainer = document.getElementById('releasesContainer');
+        const timelineArea = document.getElementById('timelineArea');
         const refreshBtn = document.getElementById('refreshBtn');
         const refreshIcon = document.getElementById('refreshIcon');
         const searchInput = document.getElementById('searchInput');
-        const filterChips = document.querySelectorAll('.filter-chip');
         const themeToggle = document.getElementById('themeToggle');
+        
+        // Floating bar & select
         const floatingBar = document.getElementById('floatingBar');
         const selectionCount = document.getElementById('selectionCount');
-        const clearSelectionBtn = document.getElementById('clearSelectionBtn');
-        const tweetSelectedBtn = document.getElementById('tweetSelectedBtn');
+        const clearBtn = document.getElementById('clearBtn');
+        const tweetBtn = document.getElementById('tweetBtn');
         
-        // Modal elements
+        // Modal
         const tweetModal = document.getElementById('tweetModal');
-        const tweetContent = document.getElementById('tweetContent');
-        const charCounter = document.getElementById('charCounter');
+        const tweetTextarea = document.getElementById('tweetTextarea');
+        const charCount = document.getElementById('charCount');
         const closeModalBtn = document.getElementById('closeModalBtn');
-        const confirmTweetBtn = document.getElementById('confirmTweetBtn');
+        const sendTweetBtn = document.getElementById('sendTweetBtn');
 
-        // Theme initialization
+        // Theme Setup
         if (localStorage.getItem('theme') === 'light') {
             document.documentElement.setAttribute('data-theme', 'light');
             themeToggle.innerHTML = '<i class="fa-solid fa-sun"></i>';
         }
-
         themeToggle.addEventListener('click', () => {
-            const currentTheme = document.documentElement.getAttribute('data-theme');
-            if (currentTheme === 'light') {
+            if (document.documentElement.getAttribute('data-theme') === 'light') {
                 document.documentElement.removeAttribute('data-theme');
                 themeToggle.innerHTML = '<i class="fa-solid fa-moon"></i>';
                 localStorage.setItem('theme', 'dark');
@@ -755,157 +910,182 @@
             }
         });
 
-        // Parse HTML release notes content into sub-updates
-        function parseEntryContent(contentHtml, date, link, entryIdx) {
-            const temp = document.createElement('div');
-            temp.innerHTML = contentHtml;
+        // Split HTML contents by header elements
+        function parseEntryHTML(html, date, url, entryIdx) {
+            const container = document.createElement('div');
+            container.innerHTML = html;
             
-            const items = [];
-            let currentType = 'General';
-            let currentHtml = '';
+            const results = [];
+            let type = 'General';
+            let content = '';
             let subIdx = 0;
             
-            // Loop through child nodes to split by headers (h3 etc.)
-            for (let child of temp.childNodes) {
+            for (let child of container.childNodes) {
                 if (child.nodeType === Node.ELEMENT_NODE && /^H[1-6]$/i.test(child.tagName)) {
-                    if (currentHtml.trim()) {
-                        items.push({
-                            id: `${entryIdx}-${subIdx++}`,
-                            type: currentType,
-                            content: currentHtml.trim(),
+                    if (content.trim()) {
+                        results.push({
+                            id: `up-${entryIdx}-${subIdx++}`,
+                            type: type,
+                            content: content.trim(),
                             date: date,
-                            link: link
+                            link: url
                         });
                     }
-                    currentType = child.textContent.trim();
-                    currentHtml = '';
+                    type = child.textContent.trim();
+                    content = '';
                 } else {
                     if (child.nodeType === Node.ELEMENT_NODE) {
-                        currentHtml += child.outerHTML;
+                        content += child.outerHTML;
                     } else if (child.nodeType === Node.TEXT_NODE) {
-                        currentHtml += child.textContent;
+                        content += child.textContent;
                     }
                 }
             }
-            
-            if (currentHtml.trim()) {
-                items.push({
-                    id: `${entryIdx}-${subIdx++}`,
-                    type: currentType,
-                    content: currentHtml.trim(),
+            if (content.trim()) {
+                results.push({
+                    id: `up-${entryIdx}-${subIdx++}`,
+                    type: type,
+                    content: content.trim(),
                     date: date,
-                    link: link
+                    link: url
                 });
             }
-            
-            return items;
+            return results;
         }
 
-        // Fetch feed from Flask API
-        async function fetchReleaseNotes() {
+        // Process XML entries to Radar Updates
+        function processEntries() {
+            updates = [];
+            rawEntries.forEach((entry, idx) => {
+                const parts = parseEntryHTML(entry.content, entry.title, entry.link, idx);
+                updates.push(...parts);
+            });
+            updateMetricsAndSidebar();
+            renderTimeline();
+        }
+
+        // Fetch Live Release Notes
+        async function fetchFeed() {
             refreshIcon.classList.add('spinner');
             refreshBtn.disabled = true;
-            
             try {
                 const response = await fetch('/api/releases');
                 const data = await response.json();
-                
                 if (data.status === 'success') {
                     rawEntries = data.entries;
-                    processFeedEntries();
+                    localStorage.setItem('bq_feed_cache', JSON.stringify(rawEntries));
+                    processEntries();
                 } else {
-                    showErrorState(data.message || 'Failed to fetch release notes.');
+                    showError(data.message || 'Error parsing feed XML.');
                 }
-            } catch (error) {
-                showErrorState(error.message || 'A network error occurred.');
+            } catch (err) {
+                showError(err.message || 'Network error fetching release notes.');
             } finally {
                 refreshIcon.classList.remove('spinner');
                 refreshBtn.disabled = false;
             }
         }
 
-        // Process XML entries to list of updates
-        function processFeedEntries() {
-            parsedUpdates = [];
-            selectedUpdateIds.clear();
-            updateFloatingBar();
+        function showError(msg) {
+            // Only show full-screen error if we have no cache loaded
+            if (updates.length === 0) {
+                timelineArea.innerHTML = `
+                    <div class="glass-panel error-state">
+                        <i class="fa-solid fa-triangle-exclamation state-icon" style="color:var(--color-issue);"></i>
+                        <h3>Sync Failure</h3>
+                        <p style="color:var(--text-muted); margin-top:0.5rem;">${msg}</p>
+                        <button class="btn btn-primary" style="margin-top:1.5rem;" onclick="fetchFeed()">Try Again</button>
+                    </div>
+                `;
+            }
+        }
 
-            rawEntries.forEach((entry, idx) => {
-                const subUpdates = parseEntryContent(entry.content, entry.title, entry.link, idx);
-                parsedUpdates.push(...subUpdates);
+        // Update counts and statistics metrics
+        function updateMetricsAndSidebar() {
+            // Count badges
+            const counts = { all: 0, feature: 0, announcement: 0, issue: 0, deprecation: 0, starred: 0 };
+            
+            updates.forEach(up => {
+                counts.all++;
+                const type = up.type.toLowerCase();
+                if (type.includes('feature')) counts.feature++;
+                else if (type.includes('announcement')) counts.announcement++;
+                else if (type.includes('issue')) counts.issue++;
+                else if (type.includes('deprecation')) counts.deprecation++;
+                
+                if (starredIds.has(up.id)) {
+                    counts.starred++;
+                }
             });
 
-            renderUpdates();
+            // Set badge numbers
+            document.getElementById('count-all').textContent = counts.all;
+            document.getElementById('count-feature').textContent = counts.feature;
+            document.getElementById('count-announcement').textContent = counts.announcement;
+            document.getElementById('count-issue').textContent = counts.issue;
+            document.getElementById('count-deprecation').textContent = counts.deprecation;
+            document.getElementById('count-starred').textContent = counts.starred;
+
+            // Analytics Panel counts
+            document.getElementById('stat-total-month').textContent = counts.all;
+            document.getElementById('stat-features-month').textContent = counts.feature;
         }
 
-        // Show error state
-        function showErrorState(msg) {
-            releasesContainer.innerHTML = `
-                <div class="error-state">
-                    <i class="fa-solid fa-triangle-exclamation state-icon"></i>
-                    <h3 class="state-title">Failed to load feed</h3>
-                    <p class="state-desc">${msg}</p>
-                    <button class="btn btn-primary" style="margin-top: 1.5rem;" onclick="fetchReleaseNotes()">
-                        <i class="fa-solid fa-arrows-rotate"></i> Try Again
-                    </button>
-                </div>
-            `;
-        }
-
-        // Helper to format text plain text from HTML
         function getPlainText(html) {
-            const temp = document.createElement('div');
-            temp.innerHTML = html;
-            return temp.textContent || temp.innerText || "";
+            const div = document.createElement('div');
+            div.innerHTML = html;
+            return div.textContent || div.innerText || '';
         }
 
-        // Render function
-        function renderUpdates() {
-            // Filter list
-            let filtered = parsedUpdates.filter(update => {
-                // Type filter
-                if (currentFilter !== 'all' && update.type.toLowerCase() !== currentFilter) {
-                    return false;
+        // Render Timeline Cards
+        function renderTimeline() {
+            let filtered = updates.filter(up => {
+                // Channel filter
+                if (currentFilter !== 'all') {
+                    if (currentFilter === 'starred') {
+                        if (!starredIds.has(up.id)) return false;
+                    } else {
+                        if (!up.type.toLowerCase().includes(currentFilter)) return false;
+                    }
                 }
+                
                 // Search filter
                 if (searchQuery) {
-                    const plainContent = getPlainText(update.content).toLowerCase();
-                    const typeMatch = update.type.toLowerCase().includes(searchQuery);
-                    const dateMatch = update.date.toLowerCase().includes(searchQuery);
-                    const contentMatch = plainContent.includes(searchQuery);
-                    return typeMatch || dateMatch || contentMatch;
+                    const text = getPlainText(up.content).toLowerCase();
+                    const titleMatch = up.type.toLowerCase().includes(searchQuery);
+                    const contentMatch = text.includes(searchQuery);
+                    const dateMatch = up.date.toLowerCase().includes(searchQuery);
+                    return titleMatch || contentMatch || dateMatch;
                 }
                 return true;
             });
 
             if (filtered.length === 0) {
-                releasesContainer.innerHTML = `
-                    <div class="empty-state">
-                        <i class="fa-solid fa-folder-open state-icon"></i>
-                        <h3 class="state-title">No release updates found</h3>
-                        <p class="state-desc">Try modifying your filters or search keywords.</p>
+                timelineArea.innerHTML = `
+                    <div class="glass-panel empty-state">
+                        <i class="fa-solid fa-radar state-icon"></i>
+                        <h3>No signals picked up</h3>
+                        <p style="color:var(--text-muted); margin-top:0.5rem;">Adjust search filters or star updates to see items.</p>
                     </div>
                 `;
                 return;
             }
 
-            // Group by Date
+            // Group by date
             const grouped = {};
-            filtered.forEach(update => {
-                if (!grouped[update.date]) {
-                    grouped[update.date] = [];
-                }
-                grouped[update.date].push(update);
+            filtered.forEach(up => {
+                if (!grouped[up.date]) grouped[up.date] = [];
+                grouped[up.date].push(up);
             });
 
-            // Build HTML
             let html = '';
             for (let date in grouped) {
-                html += `<div class="card-date-header">${date}</div>`;
+                html += `<div class="timeline-section-header">${date}</div>`;
                 
-                grouped[date].forEach(update => {
-                    const isSelected = selectedUpdateIds.has(update.id);
-                    const typeClass = update.type.toLowerCase();
+                grouped[date].forEach(up => {
+                    const isSelected = selectedIds.has(up.id);
+                    const isStarred = starredIds.has(up.id);
+                    const typeClass = up.type.toLowerCase();
                     
                     let badgeClass = 'badge-general';
                     if (typeClass.includes('feature')) badgeClass = 'badge-feature';
@@ -914,7 +1094,7 @@
                     else if (typeClass.includes('deprecation')) badgeClass = 'badge-deprecation';
 
                     html += `
-                        <div class="update-card ${isSelected ? 'selected' : ''}" data-id="${update.id}">
+                        <div class="update-card ${isSelected ? 'selected' : ''}" data-id="${up.id}">
                             <div class="card-selector">
                                 <div class="checkbox-custom">
                                     <i class="fa-solid fa-check"></i>
@@ -922,18 +1102,24 @@
                             </div>
                             <div class="card-body">
                                 <div class="card-header-row">
-                                    <span class="badge ${badgeClass}">${update.type}</span>
-                                    <div class="card-meta">
-                                        <i class="fa-regular fa-calendar"></i> ${update.date}
+                                    <span class="badge ${badgeClass}">${up.type}</span>
+                                    <div class="card-actions">
+                                        <button class="card-action-btn star-btn ${isStarred ? 'starred' : ''}" data-id="${up.id}" title="Star/Bookmark update">
+                                            <i class="fa-${isStarred ? 'solid' : 'regular'} fa-star"></i>
+                                        </button>
+                                        <button class="card-action-btn tweet-card-btn" data-id="${up.id}" title="Tweet this update">
+                                            <i class="fa-brands fa-x-twitter"></i>
+                                        </button>
                                     </div>
                                 </div>
                                 <div class="card-content">
-                                    ${update.content}
+                                    ${up.content}
                                 </div>
-                                <div class="card-hover-actions">
-                                    <button class="btn btn-tweet-action btn-tweet-card" data-id="${update.id}">
-                                        <i class="fa-brands fa-x-twitter"></i> Tweet Update
-                                    </button>
+                                <div class="card-footer">
+                                    <div class="card-date">
+                                        <i class="fa-regular fa-clock"></i> ${up.date}
+                                    </div>
+                                    ${up.link ? `<a href="${up.link}" target="_blank" class="card-date" style="color:var(--accent-color); font-weight:bold;">Docs <i class="fa-solid fa-arrow-up-right-from-square" style="font-size:0.75rem;"></i></a>` : ''}
                                 </div>
                             </div>
                         </div>
@@ -941,55 +1127,51 @@
                 });
             }
 
-            releasesContainer.innerHTML = html;
+            timelineArea.innerHTML = html;
 
-            // Attach listeners to newly created elements
+            // Handlers
             document.querySelectorAll('.update-card').forEach(card => {
                 card.addEventListener('click', (e) => {
-                    // Avoid triggering selection toggles when clicking a link or the tweet button directly
-                    if (e.target.closest('a') || e.target.closest('.btn-tweet-card')) {
-                        return;
+                    if (e.target.closest('a') || e.target.closest('.card-action-btn')) {
+                        return; // Prevent selection toggle when clicking actions or links
                     }
                     const id = card.getAttribute('data-id');
                     toggleSelection(id);
                 });
             });
 
-            document.querySelectorAll('.btn-tweet-card').forEach(btn => {
+            document.querySelectorAll('.star-btn').forEach(btn => {
                 btn.addEventListener('click', (e) => {
                     e.stopPropagation();
                     const id = btn.getAttribute('data-id');
-                    openTweetComposerForSingle(id);
+                    toggleStar(id, btn);
+                });
+            });
+
+            document.querySelectorAll('.tweet-card-btn').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    const id = btn.getAttribute('data-id');
+                    openTweetModal([id]);
                 });
             });
         }
 
-        // Toggle select/deselect
+        // Selection Handlers
         function toggleSelection(id) {
-            if (selectedUpdateIds.has(id)) {
-                selectedUpdateIds.delete(id);
+            if (selectedIds.has(id)) {
+                selectedIds.delete(id);
+                document.querySelector(`.update-card[data-id="${id}"]`)?.classList.remove('selected');
             } else {
-                selectedUpdateIds.add(id);
+                selectedIds.add(id);
+                document.querySelector(`.update-card[data-id="${id}"]`)?.classList.add('selected');
             }
-            
-            // Re-render only classes on cards to make it responsive
-            const card = document.querySelector(`.update-card[data-id="${id}"]`);
-            if (card) {
-                if (selectedUpdateIds.has(id)) {
-                    card.classList.add('selected');
-                } else {
-                    card.classList.remove('selected');
-                }
-            }
-
             updateFloatingBar();
         }
 
-        // Update floating bar
         function updateFloatingBar() {
-            const count = selectedUpdateIds.size;
-            selectionCount.textContent = `${count} update${count !== 1 ? 's' : ''} selected`;
-            
+            const count = selectedIds.size;
+            selectionCount.textContent = `${count} signal${count !== 1 ? 's' : ''} selected`;
             if (count > 0) {
                 floatingBar.classList.add('visible');
             } else {
@@ -997,104 +1179,175 @@
             }
         }
 
-        // Clear Selection
-        clearSelectionBtn.addEventListener('click', () => {
-            selectedUpdateIds.clear();
-            document.querySelectorAll('.update-card.selected').forEach(card => {
-                card.classList.remove('selected');
-            });
+        clearBtn.addEventListener('click', () => {
+            selectedIds.clear();
+            document.querySelectorAll('.update-card.selected').forEach(c => c.classList.remove('selected'));
             updateFloatingBar();
         });
 
-        // Filter handlers
-        filterChips.forEach(chip => {
-            chip.addEventListener('click', () => {
-                filterChips.forEach(c => c.classList.remove('active'));
-                chip.classList.add('active');
-                currentFilter = chip.getAttribute('data-type');
-                renderUpdates();
-            });
-        });
-
-        // Search handler
-        searchInput.addEventListener('input', (e) => {
-            searchQuery = e.target.value.toLowerCase().trim();
-            renderUpdates();
-        });
-
-        // Tweet Composers
-        function openTweetComposerForSingle(id) {
-            const update = parsedUpdates.find(u => u.id === id);
-            if (!update) return;
-
-            const textContent = getPlainText(update.content);
-            const type = update.type.toUpperCase();
+        // Bookmark Star logic
+        function toggleStar(id, btn) {
+            if (starredIds.has(id)) {
+                starredIds.delete(id);
+                btn.classList.remove('starred');
+                btn.innerHTML = '<i class="fa-regular fa-star"></i>';
+            } else {
+                starredIds.add(id);
+                btn.classList.add('starred');
+                btn.innerHTML = '<i class="fa-solid fa-star"></i>';
+            }
+            localStorage.setItem('starred_ids', JSON.stringify(Array.from(starredIds)));
+            updateMetricsAndSidebar();
             
-            // Formulate clean tweet text
-            let tweetText = `BigQuery Release: [${type}] (${update.date})\n\n${textContent}`;
-            
-            openModal(tweetText);
+            // If filter channel is starred, re-render immediately
+            if (currentFilter === 'starred') {
+                renderTimeline();
+            }
         }
 
-        tweetSelectedBtn.addEventListener('click', () => {
-            if (selectedUpdateIds.size === 0) return;
-            
-            const selected = Array.from(selectedUpdateIds).map(id => parsedUpdates.find(u => u.id === id)).filter(Boolean);
-            
-            // Compose compiled tweet
-            let tweetText = `BigQuery Updates radar summary:\n`;
-            selected.forEach(update => {
-                const textContent = getPlainText(update.content);
-                // Keep it short for list items
-                const summary = textContent.length > 80 ? textContent.substring(0, 77) + '...' : textContent;
-                tweetText += `\n• [${update.type}] ${summary}`;
+        // Filter Clicking
+        document.querySelectorAll('.filter-item').forEach(item => {
+            item.addEventListener('click', () => {
+                document.querySelectorAll('.filter-item').forEach(i => i.classList.remove('active'));
+                item.classList.add('active');
+                currentFilter = item.getAttribute('data-filter');
+                renderTimeline();
             });
-
-            openModal(tweetText);
         });
 
-        // Modal Functionality
-        function openModal(initialText) {
-            tweetContent.value = initialText;
-            updateCharCount();
+        // Search Input
+        searchInput.addEventListener('input', (e) => {
+            searchQuery = e.target.value.toLowerCase().trim();
+            renderTimeline();
+        });
+
+        // Tweet Modal Logic
+        let activeTweetIds = [];
+        function openTweetModal(ids) {
+            activeTweetIds = ids;
+            generateTweetContent();
+            updateCharLimit();
             tweetModal.classList.add('active');
-            tweetContent.focus();
+            tweetTextarea.focus();
         }
 
         function closeModal() {
             tweetModal.classList.remove('active');
         }
 
-        function updateCharCount() {
-            const len = tweetContent.value.length;
-            charCounter.textContent = `${len} / 280`;
-            
-            charCounter.className = 'char-counter';
-            if (len > 280) {
-                charCounter.classList.add('danger');
-            } else if (len > 240) {
-                charCounter.classList.add('warning');
-            }
-        }
-
-        tweetContent.addEventListener('input', updateCharCount);
         closeModalBtn.addEventListener('click', closeModal);
         tweetModal.addEventListener('click', (e) => {
             if (e.target === tweetModal) closeModal();
         });
 
-        confirmTweetBtn.addEventListener('click', () => {
-            const text = tweetContent.value;
+        // Template chips clicking
+        document.querySelectorAll('.template-chip').forEach(chip => {
+            chip.addEventListener('click', () => {
+                document.querySelectorAll('.template-chip').forEach(c => c.classList.remove('active'));
+                chip.classList.add('active');
+                currentTemplate = chip.getAttribute('data-tmpl');
+                generateTweetContent();
+                updateCharLimit();
+            });
+        });
+
+        // Hashtags toggling
+        document.querySelectorAll('.tag-toggle-chip').forEach(chip => {
+            chip.addEventListener('click', () => {
+                chip.classList.toggle('active');
+                generateTweetContent();
+                updateCharLimit();
+            });
+        });
+
+        // Auto-generate tweet representation
+        function generateTweetContent() {
+            const list = activeTweetIds.map(id => updates.find(u => u.id === id)).filter(Boolean);
+            if (list.length === 0) return;
+
+            let tweet = '';
+            
+            // 1. Core layout template
+            if (currentTemplate === 'short') {
+                if (list.length === 1) {
+                    const cleanText = getPlainText(list[0].content);
+                    const headline = `BigQuery: [${list[0].type.toUpperCase()}] (${list[0].date})`;
+                    tweet = `${headline}\n\n${cleanText}`;
+                } else {
+                    tweet = `📡 BigQuery Updates Radar:\n`;
+                    list.forEach(up => {
+                        const clean = getPlainText(up.content);
+                        const summary = clean.length > 70 ? clean.substring(0, 67) + '...' : clean;
+                        tweet += `\n• [${up.type}] ${summary}`;
+                    });
+                }
+            } 
+            else if (currentTemplate === 'detailed') {
+                if (list.length === 1) {
+                    const cleanText = getPlainText(list[0].content);
+                    tweet = `🚨 New Google BigQuery Release Update!\n📅 Date: ${list[0].date}\n🏷️ Type: ${list[0].type}\n\n📢 Description:\n${cleanText}`;
+                } else {
+                    tweet = `🔥 Latest BigQuery Release Summary (${list.length} updates verified):\n`;
+                    list.forEach(up => {
+                        const clean = getPlainText(up.content);
+                        const summary = clean.length > 80 ? clean.substring(0, 77) + '...' : clean;
+                        tweet += `\n- ${up.type}: ${summary}`;
+                    });
+                }
+            } 
+            else if (currentTemplate === 'hashtag') {
+                if (list.length === 1) {
+                    const cleanText = getPlainText(list[0].content);
+                    tweet = `⚡ GCP Release Note Alert: BigQuery ${list[0].type.toLowerCase()} update is live (${list[0].date}).\n\n👉 Detail: ${cleanText}`;
+                } else {
+                    tweet = `🚀 New features and updates on Google Cloud BigQuery:\n`;
+                    list.forEach(up => {
+                        const clean = getPlainText(up.content);
+                        const summary = clean.length > 60 ? clean.substring(0, 57) + '...' : clean;
+                        tweet += `\n▪️ ${summary}`;
+                    });
+                }
+            }
+
+            // 2. Append active tags
+            const activeTags = [];
+            document.querySelectorAll('.tag-toggle-chip.active').forEach(chip => {
+                activeTags.push(chip.getAttribute('data-tag'));
+            });
+            if (activeTags.length > 0) {
+                tweet += `\n\n${activeTags.join(' ')}`;
+            }
+
+            tweetTextarea.value = tweet;
+        }
+
+        // Live Character counter limits
+        function updateCharLimit() {
+            const count = tweetTextarea.value.length;
+            charCount.textContent = `${count} / 280`;
+            charCount.style.color = count > 280 ? 'var(--color-issue)' : 'var(--text-muted)';
+        }
+
+        tweetTextarea.addEventListener('input', updateCharLimit);
+
+        // Submit action opens Twitter Intent
+        sendTweetBtn.addEventListener('click', () => {
+            const text = tweetTextarea.value;
             const url = `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}`;
             window.open(url, '_blank', 'noopener,noreferrer');
             closeModal();
         });
 
-        // Refresh Handler
-        refreshBtn.addEventListener('click', fetchReleaseNotes);
+        // Floating tweet selected trigger
+        tweetBtn.addEventListener('click', () => {
+            openTweetModal(Array.from(selectedIds));
+        });
 
-        // Initial load
-        fetchReleaseNotes();
+        // Refresh action
+        refreshBtn.addEventListener('click', fetchFeed);
+
+        // Initial setup
+        fetchFeed();
     </script>
 </body>
 </html>
